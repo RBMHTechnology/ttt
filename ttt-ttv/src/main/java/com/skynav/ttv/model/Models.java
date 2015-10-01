@@ -25,6 +25,7 @@
 
 package com.skynav.ttv.model;
 
+import com.skynav.ttv.model.ebuttd.EBUTTD;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -45,6 +46,7 @@ public class Models {
         m.put(ST20522010.MODEL_NAME, ST20522010.ST20522010Model.class);
         m.put(ST20522013.MODEL_NAME, ST20522013.ST20522013Model.class);
         m.put(NFLXTT.MODEL_NAME, NFLXTT.NFLXTTModel.class);
+        m.put(EBUTTD.MODEL_NAME, EBUTTD.EBUTTDModel.class);
         modelMap = Collections.unmodifiableMap(m);
     }
 
@@ -53,7 +55,7 @@ public class Models {
     }
 
     public static String getDefaultModelName() {
-        return TTML1.MODEL_NAME;
+        return EBUTTD.MODEL_NAME;
     }
 
     public static Set<String> getModelNames() {
