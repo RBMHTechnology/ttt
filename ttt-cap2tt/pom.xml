@@ -14,6 +14,7 @@
 
   <properties>
     <test.basedir>${basedir}/run/test</test.basedir>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <scm>

@@ -15,6 +15,7 @@
   <properties>
     <icu4j.version>54.1.1</icu4j.version>
     <test.basedir>${basedir}/run/test</test.basedir>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <scm>
