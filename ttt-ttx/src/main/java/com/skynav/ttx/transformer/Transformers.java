@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.skynav.ttx.transformer.isd.ISD;
-import com.skynav.ttx.transformer.ttml1.TTMLPlain;
+import com.skynav.ttx.transformer.ttmlplain.TTMLPlain;
 
 public class Transformers {
 
@@ -47,7 +47,7 @@ public class Transformers {
     }
 
     public static String getDefaultTransformerName() {
-        return TTMLPlain.TRANSFORMER_NAME;
+        return ISD.TRANSFORMER_NAME;
     }
 
     public static Set<String> getTransformerNames() {
