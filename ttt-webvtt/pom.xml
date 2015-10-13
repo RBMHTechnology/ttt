@@ -1,0 +1,113 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>ttt-webvtt</artifactId>
+  <name>com.skynav.ttt:ttt-webvtt</name>
+  <description>Timed Text Transformer WebVTT</description>
+  
+  <parent>
+    <groupId>com.skynav.ttt</groupId>
+    <artifactId>ttt</artifactId>
+    <version>2.0</version>
+  </parent>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>1.8</java.version>
+  </properties>
+
+  <scm>
+    <connection>scm:git:https://github.com/skynav/ttt.git</connection>
+    <url>scm:git:https://github.com/skynav/ttt.git</url>
+    <developerConnection>scm:git:https://github.com/skynav/ttt.git</developerConnection>
+  </scm>
+
+  <distributionManagement>
+    <site>
+      <id>${project.artifactId}-site</id>
+      <url>${project.baseUri}</url>
+    </site>
+  </distributionManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${checkstyle.version}</version>
+        <configuration>
+          <configLocation>${project.baseUri}src/tools/resources/checkstyle/checkstyle.xml</configLocation>
+          <headerLocation>${project.baseUri}src/tools/resources/checkstyle/LICENSE.txt</headerLocation>
+          <linkXRef>false</linkXRef>
+          <logViolationsToConsole>true</logViolationsToConsole>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${surefire.version}</version>
+        <configuration>
+          <includes>
+            <include>**/*TestCase.java</include>
+            <include>**/*TestCases.java</include>
+          </includes>
+          <redirectTestOutputToFile>true</redirectTestOutputToFile>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${checkstyle.version}</version>
+        <configuration>
+          <configLocation>${project.baseUri}src/tools/resources/checkstyle/checkstyle.xml</configLocation>
+          <headerLocation>${project.baseUri}src/tools/resources/checkstyle/LICENSE.txt</headerLocation>
+          <linkXRef>false</linkXRef>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>3.0.1</version>
+        <configuration>
+          <excludeFilterFile>src/tools/resources/findbugs/exclusions.xml</excludeFilterFile>
+          <effort>Max</effort>
+          <threshold>Low</threshold>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>${pmd.version}</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>pmd</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+        <configuration>
+          <rulesets>
+            <ruleset>${project.baseUri}src/tools/resources/pmd/rules.xml</ruleset>
+          </rulesets>
+          <linkXRef>false</linkXRef>
+          <skipEmptyReport>false</skipEmptyReport>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+
+</project>

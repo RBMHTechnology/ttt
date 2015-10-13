@@ -51,6 +51,7 @@
     <module>ttt-ttxv</module>
     <module>ttt-ttpe</module>
     <module>ttt-cap2tt</module>
+	<module>ttt-webvtt</module>
   </modules>
 
   <build>
