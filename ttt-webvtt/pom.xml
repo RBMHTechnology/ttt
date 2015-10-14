@@ -2,8 +2,8 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>ttt-webvtt</artifactId>
-  <name>com.skynav.ttt:ttt-webvtt</name>
+  <artifactId>ttt-tt2webvtt</artifactId>
+  <name>com.skynav.ttt:ttt-tt2webvtt</name>
   <description>Timed Text Transformer WebVTT</description>
   
   <parent>
@@ -36,6 +36,18 @@
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.4</version>
+      <scope>test</scope>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>com.skynav.ttt</groupId>
+      <artifactId>ttt-ttv</artifactId>
+      <version>2.0</version>
     </dependency>
   </dependencies>
 
