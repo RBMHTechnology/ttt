@@ -31,7 +31,6 @@ import com.skynav.ttv.app.OptionSpecification;
 import com.skynav.ttv.app.UnknownOptionException;
 import com.skynav.ttv.model.Model;
 import com.skynav.ttv.model.ttml.TTML;
-import com.skynav.ttv.model.ttml1.tt.ObjectFactory;
 import com.skynav.ttv.model.ttml1.tt.TimedText;
 import com.skynav.ttv.util.IOUtil;
 import com.skynav.ttv.util.PreVisitor;
@@ -116,7 +115,7 @@ public class TTMLPlain {
             {"ttml-plain-output-directory", "DIRECTORY", "specify path to directory where output is to be written"},
             {"ttml-plain-output-encoding", "ENCODING", "specify character encoding of output (default: " + defaultOutputEncoding.name() + ")"},
             {"ttml-plain-output-indent", "", "indent output (default: indent)"},
-            {"ttml-plain-output-pattern", "PATTERN", "specify output file name pattern (default: 'isd00000')"},
+            {"ttml-plain-output-pattern", "PATTERN", "specify output file name pattern (default: 'out00000')"},
             {"ttml-plain-output-stdout", "", "write transformed output to stdout"}};
         protected static final Collection<OptionSpecification> longOptions;
 
@@ -467,9 +466,9 @@ public class TTMLPlain {
             if (outputDirectoryPath != null) {
                 directory = new File(outputDirectoryPath);
                 if (!directory.exists()) {
-                    throw new InvalidOptionUsageException("output-directory", "directory does not exist: " + outputDirectoryPath);
+                    throw new InvalidOptionUsageException("ttml-plain-output-directory", "directory does not exist: " + outputDirectoryPath);
                 } else if (!directory.isDirectory()) {
-                    throw new InvalidOptionUsageException("output-directory", "not a directory: " + outputDirectoryPath);
+                    throw new InvalidOptionUsageException("ttml-plain-output-directory", "not a directory: " + outputDirectoryPath);
                 }
             } else {
                 directory = new File(".");
@@ -488,7 +487,7 @@ public class TTMLPlain {
                     encoding = null;
                 }
                 if (encoding == null) {
-                    throw new InvalidOptionUsageException("output-encoding", "unknown encoding: " + outputEncodingName);
+                    throw new InvalidOptionUsageException("ttml-plain-output-encoding", "unknown encoding: " + outputEncodingName);
                 }
             } else {
                 encoding = null;
