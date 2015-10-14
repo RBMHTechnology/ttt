@@ -1,11 +1,11 @@
-package com.redbullmediabase.resourcelayer.processing.ttt.webvtt;
+package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.builders;
 
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.Document;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.metadata.HeaderMetadata;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.HeaderMetadata;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.Note;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.metadata.Region;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.Cue;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.CueOrNote;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.Region;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.Cue;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueOrNote;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

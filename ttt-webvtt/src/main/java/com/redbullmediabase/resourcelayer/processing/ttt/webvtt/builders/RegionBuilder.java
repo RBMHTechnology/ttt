@@ -1,7 +1,7 @@
-package com.redbullmediabase.resourcelayer.processing.ttt.webvtt;
+package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.builders;
 
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.metadata.Region;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.metadata.RegionSettings;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.Region;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.RegionSettings;
 import java.util.HashSet;
 import java.util.Set;
 

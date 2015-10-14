@@ -1,8 +1,8 @@
-package com.redbullmediabase.resourcelayer.processing.ttt.webvtt;
+package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.builders;
 
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.CueHtmlNode;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.CueHtmlNode.NodeType;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.CueNode;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueHtmlNode;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueHtmlNode.NodeType;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CuePayload;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -15,7 +15,7 @@ public class CueHtmlNodeBuilder extends AbstractNodeBuilder<CueHtmlNode, CueHtml
 
     private NodeType nodeType;
     private String nodeAnnotation;
-    private final List<CueNode> children;
+    private final List<CuePayload> children;
 
     @Override
     protected CueHtmlNodeBuilder getThis() {
@@ -44,12 +44,12 @@ public class CueHtmlNodeBuilder extends AbstractNodeBuilder<CueHtmlNode, CueHtml
         return thisObject;
     }
 
-    public CueHtmlNodeBuilder withChild(CueNode child) {
+    public CueHtmlNodeBuilder withChild(CuePayload child) {
         this.children.add(child);
         return thisObject;
     }
 
-    public CueHtmlNodeBuilder withChildren(Collection<CueNode> children) {
+    public CueHtmlNodeBuilder withChildren(Collection<CuePayload> children) {
         this.children.addAll(children);
         return thisObject;
     }

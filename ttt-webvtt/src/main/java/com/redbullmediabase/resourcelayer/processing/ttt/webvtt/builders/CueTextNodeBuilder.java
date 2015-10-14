@@ -1,6 +1,6 @@
-package com.redbullmediabase.resourcelayer.processing.ttt.webvtt;
+package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.builders;
 
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.CueTextNode;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueTextualPayload;
 
 /**
  *
@@ -16,8 +16,8 @@ class CueTextNodeBuilder {
         return new CueTextNodeBuilder();
     }
     
-    public CueTextNode build() {
-        return new CueTextNode(text);
+    public CueTextualPayload build() {
+        return new CueTextualPayload(text);
     }
     
     public CueTextNodeBuilder withText(String text) {

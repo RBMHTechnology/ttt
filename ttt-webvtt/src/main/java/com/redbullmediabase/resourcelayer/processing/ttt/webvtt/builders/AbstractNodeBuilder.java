@@ -1,6 +1,6 @@
-package com.redbullmediabase.resourcelayer.processing.ttt.webvtt;
+package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.builders;
 
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.CueAbstractNode;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueAbstractNode;
 import java.util.ArrayList;
 import java.util.List;
 
