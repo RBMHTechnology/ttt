@@ -1,21 +1,19 @@
 package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model;
 
 /**
- * Represents notes/comments.
- * 
- * A WebVTT comment block is ignored by the parser.
+ * Represents simple textual cue payload. The text is not escaped.
  * 
  * @author Michal Samek, (Michal.Samek at at.redbullmediahouse.com)
  */
-public class Note implements CueOrNote {
-
+public class CueTextualPayload implements CuePayload {
     private final String text;
 
-    public Note(final String note) {
-        text = note;
+    public CueTextualPayload(final String text) {
+        this.text = text;
     }
 
     public String getText() {
         return text;
     }
+
 }

@@ -1,11 +1,11 @@
-package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue;
+package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model;
 
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.metadata.Region;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.helper.Pair;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.helper.Percentage;
 
 /**
- *
+ * Wrapper class for Setting classes applicable to cues.
+ * 
  * @author Michal Samek, (Michal.Samek at at.redbullmediahouse.com)
  */
 public class CueSettings {
@@ -62,8 +62,8 @@ public class CueSettings {
             super(new Pair<>(value, null));
         }
         
-        public LineSetting(Pair<Number,LineSetting.LineAlignment> value) {
-            super(value);
+        public LineSetting(Number value, LineAlignment align) {
+            super(new Pair<>(value, align));
         }
 
         public static enum LineAlignment {
@@ -84,8 +84,8 @@ public class CueSettings {
             super(new Pair<>(value, null));
         }
         
-        public PositionSetting(Pair<Number, PositionSetting.PositionAlignment> value) {
-            super(value);
+        public PositionSetting(Number value, PositionAlignment align) {
+            super(new Pair<>(value, align));
         }
 
         public static enum PositionAlignment {

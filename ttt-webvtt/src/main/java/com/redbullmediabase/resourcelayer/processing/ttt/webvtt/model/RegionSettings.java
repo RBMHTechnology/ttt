@@ -1,10 +1,11 @@
-package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.metadata;
+package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model;
 
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.helper.Pair;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.helper.Percentage;
 
 /**
- *
+ * Wrapper class for Setting classes applicable to regions.
+ * 
  * @author Michal Samek, (Michal.Samek at at.redbullmediahouse.com)
  */
 public class RegionSettings {

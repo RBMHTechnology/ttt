@@ -1,12 +1,13 @@
-package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.metadata;
+package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model;
 
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.metadata.RegionSettings.RegionSetting;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.RegionSettings.RegionSetting;
 import java.util.Collections;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
- *
+ * Represents regions.
+ * 
  * @author Michal Samek, (Michal.Samek at at.redbullmediahouse.com)
  */
 public class Region implements HeaderMetadata {

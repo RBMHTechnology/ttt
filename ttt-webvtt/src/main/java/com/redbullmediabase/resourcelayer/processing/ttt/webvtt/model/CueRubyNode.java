@@ -1,4 +1,4 @@
-package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue;
+package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model;
 
 import java.util.List;
 
@@ -9,27 +9,18 @@ import java.util.List;
  */
 public class CueRubyNode extends CueAbstractNode {
 
-    public CueRubyNode(List<CueNode> children) {
+    public CueRubyNode(List<CuePayload> children) {
         super(children);
     }
 
-    @Override
-    public boolean requiresAnnotation() {
-        return false;
-    }
 
     /**
      * Ruby text tags to display ruby characters (i.e. small annotative characters above other characters).
      */
     public static class CueRubyRtNode extends CueAbstractNode {
 
-        public CueRubyRtNode(List<CueNode> children) {
+        public CueRubyRtNode(List<CuePayload> children) {
             super(children);
-        }
-
-        @Override
-        public boolean requiresAnnotation() {
-            return false;
         }
 
     }

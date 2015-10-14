@@ -1,4 +1,4 @@
-package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue;
+package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model;
 
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.helper.Timestamp;
 import java.util.List;
@@ -15,7 +15,7 @@ public class CueTimestampNode extends CueAbstractNode {
 
     private final Timestamp timestamp;
 
-    public CueTimestampNode(Timestamp timestamp, List<CueNode> children) {
+    public CueTimestampNode(Timestamp timestamp, List<CuePayload> children) {
         super(children);
         this.timestamp = timestamp;
     }
@@ -24,8 +24,4 @@ public class CueTimestampNode extends CueAbstractNode {
         return timestamp;
     }
 
-    @Override
-    public boolean requiresAnnotation() {
-        return false;
-    }
 }

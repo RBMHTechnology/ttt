@@ -1,9 +1,10 @@
-package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue;
+package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model;
 
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.helper.Timestamp;
 
 /**
- *
+ * Represents the cue timing.
+ * 
  * @author Michal Samek, (Michal.Samek at at.redbullmediahouse.com)
  */
 public class CueTiming {

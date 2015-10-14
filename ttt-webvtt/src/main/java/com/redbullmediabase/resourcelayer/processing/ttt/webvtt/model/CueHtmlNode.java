@@ -1,4 +1,4 @@
-package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue;
+package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model;
 
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +41,7 @@ public class CueHtmlNode extends CueAbstractNode {
     public CueHtmlNode(
             final NodeType type,
             final String annotation,
-            final List<CueNode> children,
+            final List<CuePayload> children,
             final List<String> nodeClasses) {
         super(children);
         this.type = type;
@@ -56,7 +56,6 @@ public class CueHtmlNode extends CueAbstractNode {
                 : Collections.EMPTY_LIST;
     }
 
-    @Override
     public final boolean requiresAnnotation() {
         switch (getType()) {
             case VOICE:

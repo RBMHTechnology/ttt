@@ -1,4 +1,4 @@
-package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.metadata;
+package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model;
 
 /**
  *

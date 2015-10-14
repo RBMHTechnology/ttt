@@ -1,23 +1,16 @@
 package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model;
 
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.metadata.HeaderMetadata;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.metadata.Region;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.Cue;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.CueOrNote;
-import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- *
+ * Represent whole WebVTT document. This is root element in the WebVTT model.
+ * 
  * @author Michal Samek, (Michal.Samek at at.redbullmediahouse.com)
  */
 public class Document {
 
-    public static Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
-    public static String MIME_TYPE = "text/vtt";
-    
     private final List<HeaderMetadata> metadataBlock;
     private final List<CueOrNote> cueBlock;
     

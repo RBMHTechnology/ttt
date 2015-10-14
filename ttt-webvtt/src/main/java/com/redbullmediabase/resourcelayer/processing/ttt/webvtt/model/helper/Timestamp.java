@@ -10,9 +10,9 @@ import java.util.regex.Pattern;
  *
  * @author Michal Samek, (Michal.Samek at at.redbullmediahouse.com)
  */
-public class Timestamp {
+public class Timestamp implements Comparable<Timestamp> {
 
-    private final int hours, minutes, seconds, millis;
+    private final Integer hours, minutes, seconds, millis;
 
     public Timestamp(
             final int hours,
@@ -78,5 +78,16 @@ public class Timestamp {
     @Override
     public String toString() {
         return String.format("%02d:%02d:%02d.%03d", hours, minutes, seconds, millis);
+    }
+
+    @Override
+    public int compareTo(Timestamp other) {
+        Integer[] thisValues = new Integer[]{hours, minutes, seconds , millis};
+        Integer[] otherValues = new Integer[]{other.hours, other.minutes, other.seconds, other.millis};
+        for (int i = 0; i < 4; ++i) {
+            int cmp = thisValues[i].compareTo(otherValues[i]);
+            if (cmp != 0) return cmp;
+        }
+        return 0;
     }
 }
