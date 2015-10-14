@@ -1,23 +1,22 @@
 package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.output;
 
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.metadata.HeaderMetadata;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.metadata.Region;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.CueTiming;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.CueOrNote;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.Cue;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.CueTimestampNode;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.CuePayload;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.CueTextNode;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.CueHtmlNode;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.CueRubyNode;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.HeaderMetadata;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.Region;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueTiming;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueOrNote;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.Cue;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueTimestampNode;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CuePayload;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueTextualPayload;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueHtmlNode;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueRubyNode;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.Document;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.Note;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.CueHtmlNode.NodeType;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueHtmlNode.NodeType;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.List;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  *
@@ -36,10 +35,10 @@ public class Printer extends AbstractPrinter implements AutoCloseable {
     @Override
     public void print(Document webvtt) throws IOException {
         sb.append(Constants.WEBVTT_TAG);
-        sb.append(Constants.LT).append(Constants.LT);
+        sb.append(Constants.LT);
 
         printMetadataBlock(webvtt.getMetadataBlock());
-        sb.append(Constants.LT);
+        sb.append(Constants.LT).append(Constants.LT);
 
         printCueBlock(webvtt.getCueBlock());
         sb.append(Constants.LT);
@@ -69,6 +68,8 @@ public class Printer extends AbstractPrinter implements AutoCloseable {
                 .append(Constants.REGION_SETTINGS_DELIMITER);
 
         String settings = region.getSettings().stream()
+                //sort the settings, so that the order is deterministic
+                .sorted((a,b) -> a.getClass().getCanonicalName().compareTo(b.getClass().getCanonicalName()))
                 .map(setting -> RegionSettingPrinter.print(setting))
                 .reduce("", (a, b) -> a + Constants.REGION_SETTINGS_DELIMITER + b);
         sb.append(settings);
@@ -98,6 +99,8 @@ public class Printer extends AbstractPrinter implements AutoCloseable {
         //Cue settings
         sb.append(Constants.CUE_SETTING_DELIMITER);
         String settings = cue.getSettings().stream()
+                //sort the settings, so that the order is deterministic
+                .sorted((a,b) -> a.getClass().getCanonicalName().compareTo(b.getClass().getCanonicalName()))
                 .map(setting -> CueSettingPrinter.print(setting))
                 .reduce("", (a, b) -> a + Constants.CUE_SETTINGS_DELIMITER + b);
         sb.append(settings);
@@ -126,8 +129,8 @@ public class Printer extends AbstractPrinter implements AutoCloseable {
     private void printCueNode(CuePayload node) {
         if (node instanceof CueHtmlNode) {
             printCueHtmlNode((CueHtmlNode) node);
-        } else if (node instanceof CueTextNode) {
-            printCueTextNode((CueTextNode) node);
+        } else if (node instanceof CueTextualPayload) {
+            printCueTextNode((CueTextualPayload) node);
         } else if (node instanceof CueTimestampNode) {
             printCueTimestampNode((CueTimestampNode) node);
         } else if (node instanceof CueRubyNode) {
@@ -156,7 +159,7 @@ public class Printer extends AbstractPrinter implements AutoCloseable {
                 .append(">");
     }
 
-    private void printCueTextNode(CueTextNode node) {
+    private void printCueTextNode(CueTextualPayload node) {
         sb.append(node.getText());
     }
     

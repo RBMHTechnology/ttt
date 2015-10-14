@@ -1,7 +1,7 @@
 package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.output;
 
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.metadata.RegionSettings.*;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.metadata.RegionSettings.ScrollSetting.ScrollSettingValue;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.RegionSettings.*;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.RegionSettings.ScrollSetting.ScrollSettingValue;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.helper.Pair;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.helper.Percentage;
 import java.util.HashMap;

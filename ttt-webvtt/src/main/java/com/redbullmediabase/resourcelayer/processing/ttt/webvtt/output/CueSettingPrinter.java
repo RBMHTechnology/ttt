@@ -1,9 +1,9 @@
 package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.output;
 
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.metadata.Region;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.CueSettings.*;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.CueSettings.AlignmentSetting.AlignmentSettingValue;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.cue.CueSettings.VerticalTextSetting.VerticalTextSettingValue;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.Region;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueSettings.*;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueSettings.AlignmentSetting.AlignmentSettingValue;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueSettings.VerticalTextSetting.VerticalTextSettingValue;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.helper.Pair;
 import java.util.HashMap;
 import java.util.Map;
@@ -88,9 +88,8 @@ public class CueSettingPrinter {
     private static class SizeSettingPrinter implements Function<Object, String> {
 
         @Override
-        public String apply(Object t) {
-            Double value = (Double) t;
-            return value.toString() + "%";
+        public String apply(Object value) {
+            return value.toString();
         }
 
     }
