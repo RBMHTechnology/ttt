@@ -132,7 +132,18 @@
             <configuration>
               <specVersion>2.1</specVersion>
               <schemaDirectory>src/main/resources/com/skynav/ttv/xsd/ebuttd</schemaDirectory>
-                <generateDirectory>target/generated-sources/xjc-ebu-tt-d</generateDirectory>
+              <generateDirectory>target/generated-sources/xjc-ebu-tt-d</generateDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>xjc-imsc1</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <specVersion>2.1</specVersion>
+              <schemaDirectory>src/main/resources/com/skynav/ttv/xsd/imsc1</schemaDirectory>
+              <generateDirectory>target/generated-sources/xjc-imsc1</generateDirectory>
             </configuration>
           </execution>
         </executions>
