@@ -15,7 +15,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,15 +36,13 @@ public class WebVTTConverter {
     
     // per-resource state
     private File resourceFile;
-    private URI resourceUri;
     private TimedText rootBinding;
     
     public WebVTTConverter() {
         
     }
     
-    public void run(URI uri, OutputStream transformedStream, OutputStream errorStream) throws Exception {
-        this.resourceUri = uri;
+    public void run(String uri, OutputStream transformedStream, OutputStream errorStream) throws Exception {
         this.resourceFile = new File(uri);
         
         resourceUnmarshall();
