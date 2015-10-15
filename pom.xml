@@ -31,10 +31,17 @@
     <xmlunit.version>1.0</xmlunit.version>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>mediabase</id>
+      <url>https://repository.redbullmediabase.com/content/groups/mediabase/</url>
+    </repository> 
+  </repositories>
+
   <scm>
-    <connection>scm:git:https://github.com/skynav/ttt.git</connection>
-    <url>https://github.com/skynav/ttt</url>
-    <developerConnection>scm:git:https://github.com/skynav/ttt.git</developerConnection>
+    <url>https://git.redbullmediabase.com/projects/THIRD/repos/timed-text-toolkit</url>
+    <connection>scm:git:git@git.redbullmediabase.com:7999/third/timed-text-toolkit.git</connection>
+    <developerConnection>scm:git:git@git.redbullmediabase.com:7999/third/timed-text-toolkit.git</developerConnection>
   </scm>
 
   <distributionManagement>
@@ -42,6 +49,14 @@
       <id>${project.artifactId}-site</id>
       <url>${project.baseUri}</url>
     </site>
+    <repository>
+      <id>mediabaseRelease</id>
+      <url>https://repository.redbullmediabase.com/content/repositories/releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>mediabaseSnapshot</id>
+      <url>https://repository.redbullmediabase.com/content/repositories/snapshots/</url>
+    </snapshotRepository>
   </distributionManagement>
 
   <modules>
