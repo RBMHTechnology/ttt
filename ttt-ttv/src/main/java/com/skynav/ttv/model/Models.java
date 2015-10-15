@@ -57,7 +57,7 @@ public class Models {
     }
 
     public static String getDefaultModelName() {
-        return EBUTTD.MODEL_NAME;
+        return TTML1.MODEL_NAME;
     }
 
     public static Set<String> getModelNames() {
