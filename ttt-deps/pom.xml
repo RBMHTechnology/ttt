@@ -19,11 +19,4 @@
     <module>ttt-xmlunit-core</module>
   </modules>
 
-  <distributionManagement>
-    <site>
-      <id>${project.artifactid}-site</id>
-      <url>${project.baseUri}</url>
-    </site>
-  </distributionManagement>
-
 </project>

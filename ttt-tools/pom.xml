@@ -12,17 +12,4 @@
     <version>2.0</version>
   </parent>
 
-  <distributionManagement>
-    <site>
-      <id>${project.artifactId}-site</id>
-      <url>${project.baseUri}</url>
-    </site>
-  </distributionManagement>
-
-  <scm>
-    <connection>scm:git:https://github.com/skynav/ttt.git</connection>
-    <url>scm:git:https://github.com/skynav/ttt.git</url>
-    <developerConnection>scm:git:https://github.com/skynav/ttt.git</developerConnection>
-  </scm>
-
 </project>

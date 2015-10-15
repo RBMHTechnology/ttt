@@ -45,10 +45,6 @@
   </scm>
 
   <distributionManagement>
-    <site>
-      <id>${project.artifactId}-site</id>
-      <url>${project.baseUri}</url>
-    </site>
     <repository>
       <id>mediabaseRelease</id>
       <url>https://repository.redbullmediabase.com/content/repositories/releases/</url>

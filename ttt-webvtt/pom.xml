@@ -17,19 +17,6 @@
     <java.version>1.8</java.version>
   </properties>
 
-  <scm>
-    <connection>scm:git:https://github.com/skynav/ttt.git</connection>
-    <url>scm:git:https://github.com/skynav/ttt.git</url>
-    <developerConnection>scm:git:https://github.com/skynav/ttt.git</developerConnection>
-  </scm>
-
-  <distributionManagement>
-    <site>
-      <id>${project.artifactId}-site</id>
-      <url>${project.baseUri}</url>
-    </site>
-  </distributionManagement>
-
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
