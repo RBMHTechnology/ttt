@@ -7,7 +7,7 @@ import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.Region;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.Cue;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueOrNote;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -37,8 +37,8 @@ public class DocumentBuilder {
         return this;
     }
     
-    public DocumentBuilder withCues(Cue[] cues) {
-        this.cues.addAll(Arrays.asList(cues));
+    public DocumentBuilder withCues(Collection<Cue> cues) {
+        this.cues.addAll(cues);
         return this;
     }
 

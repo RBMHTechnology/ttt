@@ -2,6 +2,7 @@ package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model;
 
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueSettings.CueSetting;
 import java.util.Collections;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -27,22 +28,22 @@ public class Cue implements CueOrNote {
     private final CueTiming timing;
 
     private final Set<CueSetting> settings;
-    private final CuePayload payload;
+    private final List<CuePayload> payload;
 
     public Cue(
             final String id,
             final CueTiming timing,
             final Set<CueSetting> settings,
-            final CuePayload payload) {
-
-        assert (timing != null && payload != null);
+            final List<CuePayload> payload) {
 
         this.id = id;
         this.timing = timing;
         this.settings = settings != null
                 ? Collections.unmodifiableSet(settings)
                 : Collections.EMPTY_SET;
-        this.payload = payload;
+        this.payload = payload != null
+                ? Collections.unmodifiableList(payload)
+                : Collections.EMPTY_LIST;
     }
 
     public String getId() {
@@ -70,7 +71,7 @@ public class Cue implements CueOrNote {
         return ret;
     }
 
-    public CuePayload getPayload() {
+    public List<CuePayload> getPayload() {
         return payload;
     }
 }

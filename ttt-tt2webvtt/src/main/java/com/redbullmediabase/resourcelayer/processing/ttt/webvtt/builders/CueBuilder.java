@@ -1,12 +1,14 @@
 package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.builders;
 
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.Cue;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueAbstractNode;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CuePayload;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueSettings.CueSetting;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueTiming;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.helper.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,10 +20,11 @@ public class CueBuilder {
     private String id;
     private CueTiming timing;
     private final Set<CueSetting> settings;
-    private CuePayload payload;
+    private final List<CuePayload> payload;
 
     private CueBuilder() {
         settings = new HashSet<>();
+        payload = new ArrayList<>();
     }
 
     public static CueBuilder create() {
@@ -62,12 +65,13 @@ public class CueBuilder {
     }
 
     public CueBuilder withNode(CuePayload node) {
-        payload = node;
+        payload.add(node);
+        return this;
+    }
+    
+    public CueBuilder withNodes(Collection<CuePayload> nodes) {
+        payload.addAll(nodes);
         return this;
     }
 
-    public CueBuilder withText(String text) {
-        payload = CueTextNodeBuilder.create().withText(text).build();
-        return this;
-    }
 }

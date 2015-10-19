@@ -44,12 +44,9 @@ public class CueHtmlNode extends CueAbstractNode {
             final List<CuePayload> children,
             final List<String> nodeClasses) {
         super(children);
+        
         this.type = type;
         this.annotation = annotation;
-
-        if (requiresAnnotation() && (annotation == null || annotation.isEmpty())) {
-            throw new IllegalStateException();
-        }
 
         classes = nodeClasses != null
                 ? Collections.unmodifiableList(nodeClasses)

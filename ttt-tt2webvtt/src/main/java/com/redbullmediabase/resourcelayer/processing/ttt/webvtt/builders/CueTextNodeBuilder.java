@@ -1,12 +1,12 @@
 package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.builders;
 
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueTextualPayload;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueTextNode;
 
 /**
  *
  * @author Michal Samek, (Michal.Samek at at.redbullmediahouse.com)
  */
-class CueTextNodeBuilder {
+public class CueTextNodeBuilder {
     
     private String text;
     
@@ -16,12 +16,13 @@ class CueTextNodeBuilder {
         return new CueTextNodeBuilder();
     }
     
-    public CueTextualPayload build() {
-        return new CueTextualPayload(text);
+    public CueTextNode build() {
+        return new CueTextNode(text);
     }
     
     public CueTextNodeBuilder withText(String text) {
         this.text = text;
         return this;
     }
+
 }

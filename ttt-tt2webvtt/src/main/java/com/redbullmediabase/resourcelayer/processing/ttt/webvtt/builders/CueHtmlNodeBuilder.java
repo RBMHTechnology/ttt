@@ -11,19 +11,16 @@ import java.util.List;
  *
  * @author Michal Samek, (Michal.Samek at at.redbullmediahouse.com)
  */
-public class CueHtmlNodeBuilder extends AbstractNodeBuilder<CueHtmlNode, CueHtmlNodeBuilder> {
+public class CueHtmlNodeBuilder {
 
     private NodeType nodeType;
     private String nodeAnnotation;
     private final List<CuePayload> children;
-
-    @Override
-    protected CueHtmlNodeBuilder getThis() {
-        return this;
-    }
+    private final List<String> classes;
 
     protected CueHtmlNodeBuilder() {
         children = new ArrayList<>();
+        classes = new ArrayList<>();
     }
 
     public static CueHtmlNodeBuilder create() {
@@ -36,26 +33,27 @@ public class CueHtmlNodeBuilder extends AbstractNodeBuilder<CueHtmlNode, CueHtml
 
     public CueHtmlNodeBuilder withType(NodeType type) {
         this.nodeType = type;
-        return thisObject;
+        return this;
     }
 
     public CueHtmlNodeBuilder withAnnotation(String annotation) {
         this.nodeAnnotation = annotation;
-        return thisObject;
+        return this;
     }
 
     public CueHtmlNodeBuilder withChild(CuePayload child) {
         this.children.add(child);
-        return thisObject;
+        return this;
     }
 
     public CueHtmlNodeBuilder withChildren(Collection<CuePayload> children) {
         this.children.addAll(children);
-        return thisObject;
+        return this;
+    }
+    
+    public CueHtmlNodeBuilder withClass(String claz) {
+        this.classes.add(claz);
+        return this;
     }
 
-    public CueHtmlNodeBuilder withText(String text) {
-        this.children.add(CueTextNodeBuilder.create().withText(text).build());
-        return thisObject;
-    }
 }

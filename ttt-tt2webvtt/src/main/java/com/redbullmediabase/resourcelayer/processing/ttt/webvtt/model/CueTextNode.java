@@ -5,10 +5,10 @@ package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model;
  * 
  * @author Michal Samek, (Michal.Samek at at.redbullmediahouse.com)
  */
-public class CueTextualPayload implements CuePayload {
+public class CueTextNode implements CuePayload {
     private final String text;
 
-    public CueTextualPayload(final String text) {
+    public CueTextNode(final String text) {
         this.text = text;
     }
 
