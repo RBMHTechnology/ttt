@@ -1,5 +1,6 @@
 package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.builders;
 
+import com.redbullmediabase.resourcelayer.processing.ttt.tt2webvtt.AbstractTestCase;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.Cue;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueHtmlNode;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueSettings;
@@ -26,7 +27,7 @@ import org.junit.Test;
  *
  * @author Michal Samek, (Michal.Samek at at.redbullmediahouse.com)
  */
-public class WebVTTBuilderTestCase {
+public class WebVTTBuilderTestCase extends AbstractTestCase {
 
     private ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -94,8 +95,4 @@ public class WebVTTBuilderTestCase {
         Assert.assertEquals(outLines, manifestLines);
     }
 
-    protected List<String> readFile(String filename) throws IOException {
-        final File targetFile = new File(this.getClass().getResource(filename).getFile());
-        return FileUtils.readLines(targetFile, "UTF-8");
-    }
 }
