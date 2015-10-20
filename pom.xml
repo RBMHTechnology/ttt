@@ -4,19 +4,12 @@
 
   <groupId>com.skynav.ttt</groupId>
   <artifactId>ttt</artifactId>
-  <version>2.0</version>
+  <version>0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
   <description>Timed Text Toolkit</description>
   <inceptionYear>2013</inceptionYear>
   <url>https://github.com/skynav/ttt/tree/master</url>
-
-  <parent>
-    <groupId>com.skynav</groupId>
-    <artifactId>skynav</artifactId>
-    <version>1.0</version>
-    <relativePath/>
-  </parent>
 
   <properties>
     <checkstyle.version>2.15</checkstyle.version>
