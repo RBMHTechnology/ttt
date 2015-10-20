@@ -19,8 +19,8 @@ public class CueBuilder {
 
     private String id;
     private CueTiming timing;
-    private final Set<CueSetting> settings;
-    private final List<CuePayload> payload;
+    private Set<CueSetting> settings;
+    private List<CuePayload> payload;
 
     private CueBuilder() {
         settings = new HashSet<>();
@@ -29,6 +29,15 @@ public class CueBuilder {
 
     public static CueBuilder create() {
         return new CueBuilder();
+    }
+    
+    public static CueBuilder create(Cue other) {
+        CueBuilder builder = create();
+        builder.id = other.getId();
+        builder.timing = other.getTiming();
+        builder.settings = new HashSet<>(other.getSettings());
+        builder.payload = new ArrayList<>(other.getPayload());
+        return builder;
     }
 
     public Cue build() {
@@ -59,6 +68,14 @@ public class CueBuilder {
     public CueBuilder withSetting(CueSetting setting) {
         if (!settings.add(setting)) {
             throw new IllegalStateException("Setting " + setting + " is already defined.");
+        }
+
+        return this;
+    }
+    
+    public CueBuilder withSettings(Collection<CueSetting> settings) {
+        if (!settings.addAll(settings)) {
+            throw new IllegalStateException("Setting " + settings + " is already defined.");
         }
 
         return this;
