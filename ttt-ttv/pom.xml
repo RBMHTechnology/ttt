@@ -78,7 +78,7 @@
       <plugin>
         <groupId>org.jvnet.jaxb2.maven2</groupId>
         <artifactId>maven-jaxb2-plugin</artifactId>
-        <version>0.12.3</version>
+        <version>0.13.0</version>
         <executions>
           <execution>
             <id>xjc-ttml1</id>
@@ -98,6 +98,7 @@
             </goals>
             <configuration>
               <specVersion>2.1</specVersion>
+              <!--<schemaFiles>src/main/resources/com/skynav/ttv/xsd/ttml2/ttml2.xsd</schemaFiles>-->
               <schemaDirectory>src/main/resources/com/skynav/ttv/xsd/ttml2</schemaDirectory>
               <generateDirectory>target/generated-sources/xjc-ttml2</generateDirectory>
             </configuration>
