@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.xml.bind.JAXBIntrospector;
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.ConversionException;
 
 /**
  *
@@ -32,10 +30,11 @@ public class StyleHelper {
     public static Style mergeStyles(Style a, Style b) {
         Style merged = new Style();
         try {
-            BeanUtils.copyProperties(merged, a);
-            BeanUtils.copyProperties(merged, b);
+//            BeanUtils.copyProperties(merged, a);
+//            BeanUtils.copyProperties(merged, b);
         } catch (Exception ex) {
-            throw new ConversionException(ex);
+            throw new RuntimeException(ex);
+//            throw new ConversionException(ex);
         }
         return merged;
     }

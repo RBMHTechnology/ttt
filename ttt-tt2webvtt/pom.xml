@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>ttt-tt2webvtt</artifactId>
-  <name>com.skynav.ttt:ttt-tt2webvtt</name>
+  <name>${project.groupId}:${project.artifactId}</name>
   <description>Timed Text Transformer WebVTT</description>
   
   <parent>
@@ -47,7 +47,7 @@
     <dependency>
       <groupId>com.skynav.ttt</groupId>
       <artifactId>ttt-ttv</artifactId>
-      <version>2.0</version>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
 
