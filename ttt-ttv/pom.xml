@@ -87,12 +87,7 @@
             <configuration>
               <specVersion>2.1</specVersion>
               <schemaFiles>src/main/resources/com/skynav/ttv/xsd/ttml2/ttml2.xsd</schemaFiles>
-              <!--<schemaDirectory>src/main/resources/com/skynav/ttv/xsd/ttml2</schemaDirectory>-->
-              <bindings>
-                <binding>
-                  <url>src/main/resources/com/skynav/ttv/xsd/ttml2/ttml2.jxb</url>
-                </binding>
-              </bindings>
+              <schemaDirectory>src/main/resources/com/skynav/ttv/xsd/ttml2</schemaDirectory>
               <generateDirectory>target/generated-sources/xjc-ttml2</generateDirectory>
             </configuration>
           </execution>
