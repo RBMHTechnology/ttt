@@ -7,7 +7,7 @@ import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueOrNote;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.Cue;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueTimestampNode;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CuePayload;
-import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueTextualPayload;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueTextNode;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueHtmlNode;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueRubyNode;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.Document;
@@ -107,7 +107,7 @@ public class Printer extends AbstractPrinter implements AutoCloseable {
         sb.append(Constants.LT);
 
         //Cue payload
-        printCueNode(cue.getPayload());
+        cue.getPayload().stream().forEach(p -> printCueNode(p));
         sb.append(Constants.LT).append(Constants.LT);
 
     }
@@ -129,8 +129,8 @@ public class Printer extends AbstractPrinter implements AutoCloseable {
     private void printCueNode(CuePayload node) {
         if (node instanceof CueHtmlNode) {
             printCueHtmlNode((CueHtmlNode) node);
-        } else if (node instanceof CueTextualPayload) {
-            printCueTextNode((CueTextualPayload) node);
+        } else if (node instanceof CueTextNode) {
+            printCueTextNode((CueTextNode) node);
         } else if (node instanceof CueTimestampNode) {
             printCueTimestampNode((CueTimestampNode) node);
         } else if (node instanceof CueRubyNode) {
@@ -159,7 +159,7 @@ public class Printer extends AbstractPrinter implements AutoCloseable {
                 .append(">");
     }
 
-    private void printCueTextNode(CueTextualPayload node) {
+    private void printCueTextNode(CueTextNode node) {
         sb.append(node.getText());
     }
     
