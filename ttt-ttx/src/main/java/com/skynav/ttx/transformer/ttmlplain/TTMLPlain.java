@@ -116,7 +116,9 @@ public class TTMLPlain {
             {"ttml-plain-output-encoding", "ENCODING", "specify character encoding of output (default: " + defaultOutputEncoding.name() + ")"},
             {"ttml-plain-output-indent", "", "indent output (default: indent)"},
             {"ttml-plain-output-pattern", "PATTERN", "specify output file name pattern (default: 'out00000')"},
-            {"ttml-plain-output-stdout", "", "write transformed output to stdout"}};
+            {"ttml-plain-output-stdout", "", "write transformed output to stdout"},
+            {"ttml-plain-suppress-output", "", "suppress output"}
+        };
         protected static final Collection<OptionSpecification> longOptions;
 
         static {
@@ -136,6 +138,7 @@ public class TTMLPlain {
         protected File outputDirectory;
         protected Charset outputEncoding;
         private static boolean outputStdout;
+        private static boolean suppressOutput;
 
         @Override
         public String getName() {
@@ -201,7 +204,6 @@ public class TTMLPlain {
             }
             reporter.logInfo(reporter.message("*KEY*", "Non-ttml elements and attributes pruned"));
 
-            boolean suppressOutput = (Boolean) context.getResourceState(TransformerContext.ResourceState.ttxSuppressOutputSerialization.name());
             if (!suppressOutput && outputDirectoryClean) {
                 cleanOutputDirectory(outputDirectory, context);
             }
@@ -229,7 +231,7 @@ public class TTMLPlain {
 
                 @Override
                 public boolean visit(Object content, Object parent, Visitor.Order order) throws Exception {
-                    assert content instanceof Element && parent instanceof Element;
+                    assert content instanceof Element && (parent == null || parent instanceof Element);
                     Element elementNode = (Element) content;
                     Element parentNode = (Element) parent;
 
@@ -442,6 +444,9 @@ public class TTMLPlain {
                         throw new MissingOptionArgumentException("--" + option);
                     }
                     outputPattern = args.get(++index);
+                    break;
+                case "ttml-plain-suppress-output":
+                    suppressOutput = true;
                     break;
                 default:
                     index = index - 1;
