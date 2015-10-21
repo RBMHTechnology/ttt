@@ -27,6 +27,8 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.JAXBIntrospector;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.ValidationEvent;
+import javax.xml.bind.ValidationEventHandler;
 import javax.xml.parsers.ParserConfigurationException;
 
 /**
@@ -98,7 +100,13 @@ public class WebVTTConverter {
         unmarshaller = jc.createUnmarshaller();
 
         //Fail on non-mapped elements/attributes
-        unmarshaller.setEventHandler(event -> false);
+        unmarshaller.setEventHandler(new ValidationEventHandler() {
+
+            @Override
+            public boolean handleEvent(ValidationEvent event) {
+                return false;
+            }
+        });
 
         root = JAXBIntrospector.getValue(unmarshaller.unmarshal(reader));
 
@@ -117,13 +125,13 @@ public class WebVTTConverter {
     private List<com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.Region> transformRegions(TimedText root) {
         List<com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.Region> transformed = new ArrayList<>();
 
-        root.getHead().getLayout().getRegion().stream().forEach(region -> {
+        for (com.skynav.ttv.model.ttml1.tt.Region region : root.getHead().getLayout().getRegion()) {
             transformed.add(
                     RegionBuilder.create()
                     .withId(region.getId())
                     .build()
             );
-        });
+        }
 
         return transformed;
     }
@@ -137,15 +145,16 @@ public class WebVTTConverter {
         List<Cue> transformed = new ArrayList<>();
 
         //for each "div"
-        root.getBody().getDiv().stream().forEach((div) -> {
+        for (Division div : root.getBody().getDiv()) {
             //for each "p"
-            div.getBlockClass().stream().filter((block) -> (block instanceof Paragraph))
-                    .map((block) -> (Paragraph) block)
-                    .forEach((p) -> {
-                        generateAnonymousSpans(p);
-                        transformed.addAll(transformParagraph(p));
-                    });
-        });
+            for (Object block : div.getBlockClass()) {
+                if (JAXBIntrospector.getValue(block) instanceof Paragraph) {
+                    Paragraph p = (Paragraph) block;
+                    generateAnonymousSpans(p);
+                    transformed.addAll(transformParagraph(p));
+                }
+            }
+        }
 
         return transformed;
     }
@@ -169,13 +178,13 @@ public class WebVTTConverter {
         }
         return par;
     }
-    
+
     private Body generateStyleReferences(Body body) {
         List bodyStyles = body.getStyleAttribute();
-        
+
         return body;
     }
-    
+
     /**
      *
      * @param par
@@ -184,12 +193,15 @@ public class WebVTTConverter {
     private List<Cue> transformParagraph(Paragraph par) {
         Timestamp startTime = Timestamp.fromString(par.getBegin());
         Timestamp endTime = Timestamp.fromString(par.getEnd());
-        List<Cue> transformedSpans = par.getContent().stream()
-                .filter(content -> content instanceof JAXBElement)
-                .map(jaxbElem -> JAXBIntrospector.getValue(jaxbElem))
-                .filter(el -> el instanceof Span)
-                .map(s -> transformSpan((Span) s, par.getId(), startTime, endTime))
-                .collect(Collectors.toList());
+        List<Cue> transformedSpans = new ArrayList<>();
+        
+        for (Serializable object : par.getContent()) {
+            if (JAXBIntrospector.getValue(object) instanceof Span) {
+                Span span = (Span) JAXBIntrospector.getValue(object);
+                transformedSpans.add(transformSpan(span, par.getId(), startTime, endTime));
+            }
+        }
+        
         return mergeCuesById(transformedSpans);
     }
 
@@ -220,12 +232,30 @@ public class WebVTTConverter {
                 .build();
     }
 
+    
     private List<Cue> mergeCuesById(List<Cue> cues) {
-        Map<String, List<Cue>> cueIdMap = cues.stream().collect(Collectors.groupingBy(c -> c.getId()));
+        Map<String, List<Cue>> cueIdMap = new HashMap<>();
+        for (Cue cue : cues) {
+            if (cueIdMap.get(cue.getId()) == null) {
+                cueIdMap.put(cue.getId(), new ArrayList<Cue>());
+            }
+            cueIdMap.get(cue.getId()).add(cue);
+        }
+        
         List<Cue> processed = new ArrayList<>();
-        cueIdMap.keySet().stream().forEach(id -> {
-            processed.add(cueIdMap.get(id).stream().reduce((a, b) -> CueBuilder.create(a).withNodes(b.getPayload()).build()).get());
-        });
+        for (String id : cueIdMap.keySet()) {
+            boolean first = true;
+            Cue current = null;
+            for (Cue cc : cueIdMap.get(id)) {
+                if (first) {
+                    current = cc;
+                    first = false;
+                } else {
+                    current = CueBuilder.create(current).withNodes(cc.getPayload()).build();
+                }
+            }
+            processed.add(current);
+        }
 
         return processed;
     }
