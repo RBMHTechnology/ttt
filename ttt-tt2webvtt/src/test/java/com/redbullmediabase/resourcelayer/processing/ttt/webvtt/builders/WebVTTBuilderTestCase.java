@@ -12,13 +12,12 @@ import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.helper.Pai
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.helper.Timestamp;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.output.Printer;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
-import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -86,13 +85,28 @@ public class WebVTTBuilderTestCase extends AbstractTestCase {
     @Test
     public void verify() throws IOException {
         String outString = out.toString();
-        List<String> outLines = Arrays.asList(outString.split(System.lineSeparator()));
-        List<String> manifestLines = readFile("sample.vtt");
+        List<String> outLines = new ArrayList<>(Arrays.asList(outString.split(System.lineSeparator())));
+        List<String> manifestLines = new ArrayList<>(readFile("sample.vtt"));
 
-        outLines = outLines.stream().filter(s -> !s.isEmpty()).collect(Collectors.toList());
-        manifestLines = manifestLines.stream().filter(s -> !s.isEmpty()).collect(Collectors.toList());
+//        outLines = outLines.stream().filter(s -> !s.isEmpty()).collect(Collectors.toList());
+//        manifestLines = manifestLines.stream().filter(s -> !s.isEmpty()).collect(Collectors.toList());
+        for (Iterator<String> it = outLines.iterator(); it.hasNext(); ) {
+            String line = it.next();
+            if (line.isEmpty()) {
+                it.remove();
+            }
+        }
 
-        Assert.assertEquals(outLines, manifestLines);
+        for (Iterator<String> it = manifestLines.iterator(); it.hasNext(); ) {
+            String line = it.next();
+            if (line.isEmpty()) {
+                it.remove();
+            }
+        }
+
+        System.out.println(outString);
+        
+        Assert.assertEquals(manifestLines, outLines);
     }
 
 }

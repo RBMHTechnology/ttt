@@ -1,16 +1,16 @@
 WEBVTT
-Region: id=top  viewportanchor=80.0,100.0
-Region: id=bottom  viewportanchor=0.0,100.0
+Region: id=top viewportanchor=80.0,100.0
+Region: id=bottom viewportanchor=0.0,100.0
 
 
 NOTE	A demonstration of WebVTT library
 
 first
-00:00:00.001 --> 00:00:01.000	 region:top
+00:00:00.001 --> 00:00:01.000	region:top
 First cue
 
 bold
-00:00:02.000 --> 00:00:05.233	 region:bottom
+00:00:02.000 --> 00:00:05.233	region:bottom
 <b>Bold cue</b>
 
 last
