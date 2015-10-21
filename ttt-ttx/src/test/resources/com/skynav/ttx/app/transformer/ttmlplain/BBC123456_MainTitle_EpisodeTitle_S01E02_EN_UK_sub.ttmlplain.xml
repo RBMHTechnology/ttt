@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<tt xmlns:ns5="urn:ebu:tt:metadata" xmlns:ttp="http://www.w3.org/ns/ttml#parameter" xmlns:ttva="http://skynav.com/ns/ttv/annotations" ttp:cellResolution="46 14" ttp:timeBase="media" xml:lang="en" xmlns="http://www.w3.org/ns/ttml">
+<head>
+<metadata>
+<ttm:title xmlns:ttm="http://www.w3.org/ns/ttml#metadata">Translated title</ttm:title>
+<ttm:desc xmlns:ttm="http://www.w3.org/ns/ttml#metadata">Mail title</ttm:desc>
+</metadata>
+<styling>
+<style xmlns:tts="http://www.w3.org/ns/ttml#styling" tts:backgroundColor="#000000FF" tts:color="#CDCDCDFF" tts:direction="ltr" tts:fontFamily="proportionalSansSerif" tts:fontSize="100%" tts:fontStyle="normal" tts:lineHeight="100%" tts:textAlign="center" tts:wrapOption="noWrap" xml:id="normal"/>
+<style xmlns:tts="http://www.w3.org/ns/ttml#styling" tts:backgroundColor="#000000FF" tts:color="#CDCDCDFF" tts:direction="ltr" tts:fontFamily="proportionalSansSerif" tts:fontSize="100%" tts:fontStyle="italic" tts:lineHeight="100%" tts:textAlign="center" tts:wrapOption="noWrap" xml:id="italic"/>
+</styling>
+<layout>
+<region xmlns:tts="http://www.w3.org/ns/ttml#styling" tts:displayAlign="after" tts:extent="80% 20%" tts:origin="10% 70%" tts:showBackground="whenActive" xml:id="bottom"/>
+<region xmlns:tts="http://www.w3.org/ns/ttml#styling" tts:displayAlign="center" tts:extent="80% 20%" tts:origin="10% 40%" tts:showBackground="whenActive" xml:id="middle"/>
+<region xmlns:tts="http://www.w3.org/ns/ttml#styling" tts:displayAlign="before" tts:extent="80% 20%" tts:origin="10% 10%" tts:showBackground="whenActive" xml:id="top"/>
+</layout>
+</head>
+<body>
+<div region="bottom" style="normal" xmlns:ttm="http://www.w3.org/ns/ttml#metadata" ttm:role="caption">
+<p begin="00:00:00.083" end="00:00:01.793" xml:id="sub1">Accessing latest information.</p>
+<p begin="00:00:02.294" end="00:00:05.005" xml:id="sub2">Data files relating to<br/>Martin Truman and his ability</p>
+<p begin="00:00:05.088" end="00:00:06.590" xml:id="sub3">to predict the future<br/>through the use</p>
+<p begin="00:00:06.715" end="00:00:09.801" xml:id="sub4">of astrology shows evidence<br/>of unusually high accuracy.</p>
+<p begin="00:00:10.093" end="00:00:13.096" region="top" xml:id="sub5">Although initial scans reveal<br/>that self declared Messiah</p>
+<p begin="00:00:13.222" end="00:00:16.308" xml:id="sub6">of the Zodiac Martin Truman<br/>is, in fact, completely human,</p>
+<p begin="00:00:16.600" end="00:00:18.227" xml:id="sub7">it would seem that<br/>he has the ability</p>
+<p begin="00:00:18.310" end="00:00:21.522" xml:id="sub8">to demonstrate some unusual<br/>powers, including firing bursts</p>
+<p begin="00:00:21.605" end="00:00:23.315" xml:id="sub9">of unknown energy<br/>from his hands.</p>
+<p begin="00:00:23.524" end="00:00:25.609" region="top" xml:id="sub10">Described as "The<br/>Ancient Lights,"</p>
+<p begin="00:00:25.734" end="00:00:27.736" xml:id="sub11">the energy Truman<br/>harnesses seems to burn</p>
+<p begin="00:00:27.819" end="00:00:29.238" xml:id="sub12">with no detectable evidence.</p>
+<p begin="00:00:29.530" end="00:00:31.114" style="italic" xml:id="sub13">Additionally, Truman seems</p>
+<p begin="00:00:31.240" end="00:00:34.034" style="italic" xml:id="sub14">to have hijacked the television<br/>show "Paranormal Planet"</p>
+<p begin="00:00:34.326" end="00:00:36.828" region="top" style="italic" xml:id="sub15">and is broadcasting it<br/>worldwide on all channels</p>
+<p begin="00:00:36.954" end="00:00:39.623" style="italic" xml:id="sub16">with no detectable interference<br/>to the television signal.</p>
+<p begin="00:00:40.249" end="00:00:43.043" xml:id="sub17">A video fact file relating<br/>to this activity is stored</p>
+<p begin="00:00:43.126" end="00:00:44.461" xml:id="sub18">in the Video Updates module.</p>
+<p begin="00:00:44.628" end="00:00:47.047" xml:id="sub19">Other than the unusual<br/>activities already observed,</p>
+<p begin="00:00:47.050" end="00:00:48.340" region="top" xml:id="sub20">nothing is happening.</p>
+<p begin="00:00:48.357" end="00:00:49.633" xml:id="sub21">Nothing is happening.</p>
+<p begin="00:00:50.059" end="00:00:51.134" xml:id="sub22">Nothing is happening.</p>
+<p begin="00:00:51.552" end="00:00:53.846" xml:id="sub23">Nothing is happening.</p>
+<p begin="00:00:54.847" end="00:00:57.975" xml:id="sub24">Soon, all the signs will<br/>come under my power.</p>
+<p begin="00:00:58.267" end="00:01:00.269" region="top" xml:id="sub25">At the becoming of<br/>The Ancient Lights,</p>
+<p begin="00:01:00.477" end="00:01:02.646" xml:id="sub26">I will be King of the World!</p>
+<p begin="00:01:02.980" end="00:01:04.481" xml:id="sub27">Stand ready.</p>
+</div>
+</body>
+</tt>
