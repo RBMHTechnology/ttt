@@ -42,16 +42,12 @@ public class Region implements HeaderMetadata {
     }
     
     public <T extends RegionSetting> T getSetting(Class<T> setting) {
-        T ret;
-        try {
-        ret = settings.stream()
-                .filter(s -> s.getClass().equals(setting))
-                .map(s -> setting.cast(s))
-                .findFirst().get(); 
-       } catch (NoSuchElementException ex) {
-            ret = null;
+        for (RegionSetting s : settings) {
+            if (s.getClass().equals(setting)) {
+                return (T) s;
+            }
         }
-        return ret;
+        return null;
     }
 
 }

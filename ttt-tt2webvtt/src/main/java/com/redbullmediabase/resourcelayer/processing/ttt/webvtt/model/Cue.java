@@ -59,16 +59,12 @@ public class Cue implements CueOrNote {
     }
 
     public <T extends CueSetting> T getSetting(Class<T> setting) {
-        T ret;
-        try {
-            ret = settings.stream()
-                    .filter(s -> s.getClass().equals(setting))
-                    .map(s -> setting.cast(s))
-                    .findFirst().get();
-        } catch (NoSuchElementException ex) {
-            ret = null;
+        for (CueSetting s : settings) {
+            if (s.getClass().equals(setting)) {
+                return (T) s;
+            }
         }
-        return ret;
+        return null;
     }
 
     public List<CuePayload> getPayload() {

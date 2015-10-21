@@ -59,7 +59,7 @@ public class CueSettings {
     public static class LineSetting extends CueSetting<Pair<Number,LineSetting.LineAlignment>> {
 
         public LineSetting(Number value) {
-            super(new Pair<>(value, null));
+            super(new Pair<>(value, LineAlignment.NONE));
         }
         
         public LineSetting(Number value, LineAlignment align) {
@@ -81,7 +81,7 @@ public class CueSettings {
     public static class PositionSetting extends CueSetting<Pair<Number, PositionSetting.PositionAlignment>> {
 
         public PositionSetting(Number value) {
-            super(new Pair<>(value, null));
+            super(new Pair<>(value, PositionAlignment.NONE));
         }
         
         public PositionSetting(Number value, PositionAlignment align) {
@@ -90,7 +90,7 @@ public class CueSettings {
 
         public static enum PositionAlignment {
 
-            START, MIDDLE, END
+            START, MIDDLE, END, NONE
         }
     }
 

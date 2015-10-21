@@ -1,5 +1,6 @@
 package com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,16 +33,22 @@ public class Document {
     }
     
     public List<Region> getRegions() {
-        return metadataBlock.stream()
-                .filter(m -> m.getClass().equals(Region.class))
-                .map(m -> Region.class.cast(m))
-                .collect(Collectors.toList());
+        List<Region> regions = new ArrayList<>();
+        for (HeaderMetadata m : metadataBlock) {
+            if (m instanceof Region) {
+                regions.add((Region) m);
+            }
+        }
+        return regions;
     }
     
     public List<Cue> getCues() {
-        return cueBlock.stream()
-                .filter(c -> c.getClass().equals(Cue.class))
-                .map(c -> Cue.class.cast(c))
-                .collect(Collectors.toList());
+        List<Cue> cues = new ArrayList<>();
+        for (CueOrNote cn : cueBlock) {
+            if (cn instanceof Cue) {
+                cues.add((Cue) cn);
+            }
+        }
+        return cues;
     }
 }
