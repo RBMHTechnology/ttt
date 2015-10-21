@@ -46,7 +46,7 @@ final public class Constants {
     public static final String CUE_SETTING_VALUE_INNER_DELIMITER = ",";
     
     /** Separates cue setting list from the timing */
-    public static final String CUE_SETTING_DELIMITER = "\t";
+    public static final String CUE_SETTINGLIST_DELIMITER = "\t";
     
     /** Separates cue setting items in the cue setting list */
     public static final String CUE_SETTINGS_DELIMITER = " ";

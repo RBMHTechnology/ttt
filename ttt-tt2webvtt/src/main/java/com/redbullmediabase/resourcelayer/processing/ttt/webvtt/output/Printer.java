@@ -13,10 +13,15 @@ import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueRubyNod
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.Document;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.Note;
 import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueHtmlNode.NodeType;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.CueSettings.CueSetting;
+import com.redbullmediabase.resourcelayer.processing.ttt.webvtt.model.RegionSettings.RegionSetting;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -48,14 +53,17 @@ public class Printer extends AbstractPrinter implements AutoCloseable {
     }
 
     private void printMetadataBlock(List<HeaderMetadata> metadataBlock) {
-        metadataBlock.stream()
-                .filter(m -> m.getClass().equals(Region.class))
-                .map(r -> Region.class.cast(r))
-                .forEach(r -> {
-                    printRegion(r);
-                    sb.append(Constants.LT);
-                });
-
+//        metadataBlock.stream()
+//                .filter(m -> m.getClass().equals(Region.class))
+//                .map(r -> Region.class.cast(r))
+//                .forEach(r ->
+//                    printRegion(r)
+//                );
+        for (HeaderMetadata m : metadataBlock) {
+            if (m instanceof Region) {
+                printRegion((Region) m);
+            }
+        }
     }
 
     private void printRegion(Region region) {
@@ -67,23 +75,42 @@ public class Printer extends AbstractPrinter implements AutoCloseable {
                 .append(region.getId())
                 .append(Constants.REGION_SETTINGS_DELIMITER);
 
-        String settings = region.getSettings().stream()
-                //sort the settings, so that the order is deterministic
-                .sorted((a,b) -> a.getClass().getCanonicalName().compareTo(b.getClass().getCanonicalName()))
-                .map(setting -> RegionSettingPrinter.print(setting))
-                .reduce("", (a, b) -> a + Constants.REGION_SETTINGS_DELIMITER + b);
+//        String settings = region.getSettings().stream()
+//                //sort the settings, so that the order is deterministic
+//                .sorted((a,b) -> a.getClass().getCanonicalName().compareTo(b.getClass().getCanonicalName()))
+//                .map(setting -> RegionSettingPrinter.print(setting))
+//                .reduce("", (a, b) -> a + Constants.REGION_SETTINGS_DELIMITER + b);
+        
+        List<RegionSetting> settingsList = new ArrayList<>(region.getSettings());
+        //sort the settings, so that the order is deterministic
+        settingsList.sort(new RegionSettingComparator());
+        
+        List<String> settingStrings = new ArrayList<>();
+        for (RegionSetting s : settingsList) {
+            settingStrings.add(RegionSettingPrinter.print(s));
+        }
+        String settings = StringUtils.join(settingStrings, Constants.REGION_SETTINGS_DELIMITER);
+        
         sb.append(settings);
+        sb.append(Constants.LT);
     }
 
     private void printCueBlock(List<CueOrNote> cueBlock) {
-        cueBlock.stream().forEach(
-                cueOrNote -> {
-                    if (cueOrNote instanceof Cue) {
-                        printCue((Cue) cueOrNote);
-                    } else {
-                        printNote((Note) cueOrNote);
-                    }
-                });
+//        cueBlock.stream().forEach(
+//                cueOrNote -> {
+//                    if (cueOrNote instanceof Cue) {
+//                        printCue((Cue) cueOrNote);
+//                    } else {
+//                        printNote((Note) cueOrNote);
+//                    }
+//                });
+        for (CueOrNote cueOrNote : cueBlock) {
+            if (cueOrNote instanceof Cue) {
+                printCue((Cue) cueOrNote);
+            } else {
+                printNote((Note) cueOrNote);
+            }
+        }
     }
 
     private void printCue(Cue cue) {
@@ -97,17 +124,27 @@ public class Printer extends AbstractPrinter implements AutoCloseable {
         printCueTiming(cue.getTiming());
 
         //Cue settings
-        sb.append(Constants.CUE_SETTING_DELIMITER);
-        String settings = cue.getSettings().stream()
-                //sort the settings, so that the order is deterministic
-                .sorted((a,b) -> a.getClass().getCanonicalName().compareTo(b.getClass().getCanonicalName()))
-                .map(setting -> CueSettingPrinter.print(setting))
-                .reduce("", (a, b) -> a + Constants.CUE_SETTINGS_DELIMITER + b);
-        sb.append(settings);
+        sb.append(Constants.CUE_SETTINGLIST_DELIMITER);
+//        String settings = cue.getSettings().stream()
+//                //sort the settings, so that the order is deterministic
+//                .sorted((a,b) -> a.getClass().getCanonicalName().compareTo(b.getClass().getCanonicalName()))
+//                .map(setting -> CueSettingPrinter.print(setting))
+//                .reduce("", (a, b) -> a + Constants.CUE_SETTINGS_DELIMITER + b);
+        List<CueSetting> settingsList = new ArrayList<>(cue.getSettings());
+        settingsList.sort(new CueSettingComparator());
+        List<String> settingStrings = new ArrayList<>();
+        for (CueSetting s : settingsList) {
+            settingStrings.add(CueSettingPrinter.print(s));
+        }
+        
+        sb.append(StringUtils.join(settingStrings, Constants.CUE_SETTINGS_DELIMITER));
         sb.append(Constants.LT);
 
         //Cue payload
-        cue.getPayload().stream().forEach(p -> printCueNode(p));
+//        cue.getPayload().stream().forEach(p -> printCueNode(p));
+        for (CuePayload payload : cue.getPayload()) {
+            printCueNode(payload);
+        }
         sb.append(Constants.LT).append(Constants.LT);
 
     }
@@ -143,7 +180,8 @@ public class Printer extends AbstractPrinter implements AutoCloseable {
     private void printCueHtmlNode(CueHtmlNode node) {
         NodeType type = node.getType();
         String tagName = getNodeTagName(type);
-        String classes = node.getClasses().stream().reduce("", (a, b) -> a + Constants.CUE_NODE_CLASS_DELIMITER + b);
+//        String classes = node.getClasses().stream().reduce("", (a, b) -> a + Constants.CUE_NODE_CLASS_DELIMITER + b);
+        String classes = StringUtils.join(node.getClasses(), Constants.CUE_NODE_CLASS_DELIMITER);
         String annotation = node.requiresAnnotation() ? " " + escapeText(node.getAnnotation()) : "";
 
         sb.append("<")
@@ -152,7 +190,10 @@ public class Printer extends AbstractPrinter implements AutoCloseable {
                 .append(annotation)
                 .append(">");
 
-        node.getChildren().stream().forEach(n -> printCueNode(n));
+//        node.getChildren().stream().forEach(n -> printCueNode(n));
+        for (CuePayload child : node.getChildren()) {
+            printCueNode(child);
+        }
 
         sb.append("</")
                 .append(tagName)
@@ -165,7 +206,10 @@ public class Printer extends AbstractPrinter implements AutoCloseable {
     
     private void printCueTimestampNode(CueTimestampNode node) {
         sb.append("<").append(node.getTimestamp()).append(">");
-        node.getChildren().stream().forEach(n -> printCueNode(n));
+//        node.getChildren().stream().forEach(n -> printCueNode(n));
+        for (CuePayload child : node.getChildren()) {
+            printCueNode(child);
+        }
     }
     
     private void printCueRubyNode(CueRubyNode node) {
@@ -189,5 +233,24 @@ public class Printer extends AbstractPrinter implements AutoCloseable {
     public void close() throws Exception {
         writer.flush();
         writer.close();
+    }
+    
+    
+    private static class CueSettingComparator implements Comparator<CueSetting> {
+
+        @Override
+        public int compare(CueSetting o1, CueSetting o2) {
+            return o1.getClass().getCanonicalName().compareTo(o2.getClass().getCanonicalName());
+        }
+        
+    }
+    
+    private static class RegionSettingComparator implements Comparator<RegionSetting> {
+
+        @Override
+        public int compare(RegionSetting o1, RegionSetting o2) {
+            return o1.getClass().getCanonicalName().compareTo(o2.getClass().getCanonicalName());
+        }
+        
     }
 }
