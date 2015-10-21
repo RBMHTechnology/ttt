@@ -450,6 +450,26 @@ public class PresenterTestCases {
         performPresentationTest("test-079-span-text-align-ru.xml", 0, 0);
     }
 
+    @Test
+    public void test080OffsetTimeMetricTicks() throws Exception {
+        performPresentationTest("test-080-offset-time-metric-ticks.xml", 0, 0);
+    }
+
+    @Test
+    public void test081SMPTE30FPSDropNTSC() throws Exception {
+        performPresentationTest("test-081-smpte-30fps-drop-ntsc.xml", 0, 0);
+    }
+
+    @Test
+    public void test082SMPTE30FPSDropPAL() throws Exception {
+        performPresentationTest("test-082-smpte-30fps-drop-pal.xml", 0, 0);
+    }
+
+    @Test
+    public void test083SMPTE30FPSNonDrop() throws Exception {
+        performPresentationTest("test-083-smpte-30fps-non-drop.xml", 0, 0);
+    }
+
     private void performPresentationTest(String resourceName, int expectedErrors, int expectedWarnings) {
         performPresentationTest(resourceName, expectedErrors, expectedWarnings, null);
     }

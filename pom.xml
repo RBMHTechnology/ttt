@@ -4,12 +4,19 @@
 
   <groupId>com.skynav.ttt</groupId>
   <artifactId>ttt</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>3.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
   <description>Timed Text Toolkit</description>
   <inceptionYear>2013</inceptionYear>
   <url>https://github.com/skynav/ttt/tree/master</url>
+
+  <parent>
+    <groupId>com.skynav</groupId>
+    <artifactId>skynav</artifactId>
+    <version>1.0</version>
+    <relativePath/>
+  </parent>
 
   <properties>
     <checkstyle.version>2.15</checkstyle.version>
@@ -24,28 +31,17 @@
     <xmlunit.version>1.0</xmlunit.version>
   </properties>
 
-  <repositories>
-    <repository>
-      <id>mediabase</id>
-      <url>https://repository.redbullmediabase.com/content/groups/mediabase/</url>
-    </repository> 
-  </repositories>
-
   <scm>
-    <url>https://git.redbullmediabase.com/projects/THIRD/repos/timed-text-toolkit</url>
-    <connection>scm:git:git@git.redbullmediabase.com:7999/third/timed-text-toolkit.git</connection>
-    <developerConnection>scm:git:git@git.redbullmediabase.com:7999/third/timed-text-toolkit.git</developerConnection>
+    <connection>scm:git:https://github.com/skynav/ttt.git</connection>
+    <url>https://github.com/skynav/ttt</url>
+    <developerConnection>scm:git:https://github.com/skynav/ttt.git</developerConnection>
   </scm>
 
   <distributionManagement>
-    <repository>
-      <id>mediabaseRelease</id>
-      <url>https://repository.redbullmediabase.com/content/repositories/releases/</url>
-    </repository>
-    <snapshotRepository>
-      <id>mediabaseSnapshot</id>
-      <url>https://repository.redbullmediabase.com/content/repositories/snapshots/</url>
-    </snapshotRepository>
+    <site>
+      <id>${project.artifactId}-site</id>
+      <url>${project.baseUri}</url>
+    </site>
   </distributionManagement>
 
   <modules>
@@ -94,6 +90,14 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>${release.version}</version>
+        <configuration>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.9.1</version>
         <configuration>
@@ -101,5 +105,29 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>release-sign-artifacts</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.6</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>
