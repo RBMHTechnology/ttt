@@ -19,6 +19,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
@@ -83,7 +84,7 @@ public class Printer extends AbstractPrinter implements AutoCloseable {
         
         List<RegionSetting> settingsList = new ArrayList<>(region.getSettings());
         //sort the settings, so that the order is deterministic
-        settingsList.sort(new RegionSettingComparator());
+        Collections.sort(settingsList, new RegionSettingComparator());
         
         List<String> settingStrings = new ArrayList<>();
         for (RegionSetting s : settingsList) {
@@ -131,7 +132,7 @@ public class Printer extends AbstractPrinter implements AutoCloseable {
 //                .map(setting -> CueSettingPrinter.print(setting))
 //                .reduce("", (a, b) -> a + Constants.CUE_SETTINGS_DELIMITER + b);
         List<CueSetting> settingsList = new ArrayList<>(cue.getSettings());
-        settingsList.sort(new CueSettingComparator());
+        Collections.sort(settingsList, new CueSettingComparator());
         List<String> settingStrings = new ArrayList<>();
         for (CueSetting s : settingsList) {
             settingStrings.add(CueSettingPrinter.print(s));
