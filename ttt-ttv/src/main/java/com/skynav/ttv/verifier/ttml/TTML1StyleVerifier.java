@@ -461,6 +461,10 @@ public class TTML1StyleVerifier implements StyleVerifier {
             return false;
     }
 
+    public boolean isNegativeLengthPermitted(QName eltName, QName styleName) {
+        return true;
+    }
+
     public boolean verify(Object content, Locator locator, VerifierContext context, ItemType type) {
         if (type == ItemType.Attributes)
             return verifyAttributeItems(content, locator, context);

@@ -35,11 +35,13 @@ public class CanvasArea extends NonLeafAreaNode {
 
     private double begin;
     private double end;
+    private Extent cellResolution;
 
-    public CanvasArea(Element e, double begin, double end) {
+    public CanvasArea(Element e, double begin, double end, Extent cellResolution) {
         super(e);
         this.begin = begin;
         this.end = end;
+        this.cellResolution = cellResolution;
     }
 
     public double getBegin() {
@@ -48,6 +50,10 @@ public class CanvasArea extends NonLeafAreaNode {
 
     public double getEnd() {
         return end;
+    }
+
+    public Extent getCellResolution() {
+        return cellResolution;
     }
 
     public Extent getExtent() {

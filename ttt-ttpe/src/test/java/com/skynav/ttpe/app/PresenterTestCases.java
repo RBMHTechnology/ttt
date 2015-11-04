@@ -470,6 +470,16 @@ public class PresenterTestCases {
         performPresentationTest("test-083-smpte-30fps-non-drop.xml", 0, 0);
     }
 
+    @Test
+    public void test084CellResolution1Part() throws Exception {
+        performPresentationTest("test-084-cell-resolution-1-part.xml", 0, 0);
+    }
+
+    @Test
+    public void test085CellResolution2Part() throws Exception {
+        performPresentationTest("test-085-cell-resolution-2-part.xml", 0, 0);
+    }
+
     private void performPresentationTest(String resourceName, int expectedErrors, int expectedWarnings) {
         performPresentationTest(resourceName, expectedErrors, expectedWarnings, null);
     }
@@ -588,9 +598,21 @@ public class PresenterTestCases {
     private void maybeAddOutputDirectory(List<String> args) {
         String reportsDirectory = System.getProperty("surefire.reportsDirectory");
         if (reportsDirectory != null) {
-            args.add("--output-directory");
-            args.add(reportsDirectory);
+            maybeCreateOutputDirectory(reportsDirectory);
+            File f = new File(reportsDirectory);
+            if (f.exists()) {
+                args.add("--output-directory");
+                args.add(reportsDirectory);
+            }
         }
+    }
+
+    private boolean maybeCreateOutputDirectory(String outputDirectory) {
+        File f = new File(outputDirectory);
+        if (!f.exists())
+            return f.mkdir();
+        else
+            return false;
     }
 
     private void maybeCheckDifferences(URI output, URI input) {
@@ -733,6 +755,7 @@ public class PresenterTestCases {
     }
 
     private String[] getComponents(URI uri) {
+        assert uri != null;
         String s = uri.getScheme();
         String p = uri.getPath();
         String n, x;

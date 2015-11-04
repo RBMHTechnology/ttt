@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Skynav, Inc. All rights reserved.
+ * Copyright 2014-15 Skynav, Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -23,43 +23,45 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.skynav.ttv.verifier.imsc;
+package com.skynav.ttpe.parameter;
 
-import javax.xml.namespace.QName;
+import com.skynav.ttpe.geometry.Extent;
 
-import com.skynav.ttv.model.Model;
-import com.skynav.ttv.verifier.smpte.ST20522010StyleVerifier;
+public class Defaults {
 
-public class IMSC1StyleVerifier extends ST20522010StyleVerifier {
+    public static final Extent defaultCellResolution                           = new Extent(32, 15);
+    public static final double defaultFrameRate                                = 30;
+    public static final double defaultFrameRateMultiplier                      = 1;
 
-    public IMSC1StyleVerifier(Model model) {
-        super(model);
+    private Extent cellResolution                                              = defaultCellResolution;
+    private double frameRate                                                   = defaultFrameRate;
+    private double frameRateMultiplier                                         = defaultFrameRateMultiplier;
+
+    public Defaults() {
     }
 
-    protected boolean permitsStyleAttribute(Object content, QName name) {
-
-        // if image profile, exclude:
-        // color
-        // direction
-        // displayAlign
-        // fontFamily
-        // fontSize
-        // fontStyle
-        // fontWeight
-        // lineHeight
-        // padding
-        // textAlign
-        // textDecoration
-        // textOutline
-        // unicodeBidi
-        // wrapOption
-
-        return super.permitsStyleAttribute(content, name);
+    public void setCellResolution(Extent cellResolution) {
+        this.cellResolution = cellResolution;
     }
 
-    @Override
-    public boolean isNegativeLengthPermitted(QName eltName, QName styleName) {
-        return false;
+    public Extent getCellResolution() {
+        return cellResolution;
+    }
+
+    public void setFrameRate(double frameRate) {
+        this.frameRate = frameRate;
+    }
+
+    public double getFrameRate() {
+        return frameRate;
+    }
+
+    public void setFrameRateMultiplier(double frameRateMultiplier) {
+        this.frameRateMultiplier = frameRateMultiplier;
+    }
+
+    public double getFrameRateMultiplier() {
+        return frameRateMultiplier;
     }
 
 }
