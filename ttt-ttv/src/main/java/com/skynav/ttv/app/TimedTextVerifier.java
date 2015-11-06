@@ -974,6 +974,7 @@ public class TimedTextVerifier implements VerifierContext {
                 try {
                     Class verifierClass = Class.forName(verifierClaz);
                     SemanticsVerifier verifier = (SemanticsVerifier) verifierClass.newInstance();
+                    externalVerifiers.add(verifier);
                 } catch (ClassCastException ex) {
                     throw new InvalidOptionUsageException("external-verifier",
                             "supplied verifier doesn't implement com.skynav.ttv.verifier.SemanticsVerifier interface");
