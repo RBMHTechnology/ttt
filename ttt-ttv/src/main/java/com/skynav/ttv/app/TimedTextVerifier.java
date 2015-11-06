@@ -106,6 +106,7 @@ import com.skynav.ttv.util.Locators;
 import com.skynav.ttv.util.Message;
 import com.skynav.ttv.util.Reporter;
 import com.skynav.ttv.util.Reporters;
+import com.skynav.ttv.verifier.SemanticsVerifier;
 import com.skynav.ttv.verifier.VerifierContext;
 import com.skynav.ttv.verifier.util.Lengths;
 import com.skynav.ttv.verifier.util.MixedUnitsTreatment;
@@ -204,6 +205,7 @@ public class TimedTextVerifier implements VerifierContext {
         { "until-phase",                "PHASE",    "verify up to specified phase, where PHASE is none|resource|wellformedness|validity|semantics|all (default: " +
             Phase.getDefault().name().toLowerCase() + ")" },
         { "warn-on",                    "TOKEN",    "enable warning specified by warning TOKEN, where multiple instances of this option may be specified" },
+        { "external-verifier",          "CLASS",    "specify semantics verifier class, that will be triggered to check your-domain-specific requirements" },
     };
     private static final Collection<OptionSpecification> longOptions;
     static {
@@ -302,6 +304,8 @@ public class TimedTextVerifier implements VerifierContext {
     private boolean showWarningTokens;
     private String treatForeignAs;
     private String untilPhase;
+    private List<String> externalVerifierClasses = new java.util.ArrayList<>();
+    
 
     // derived option state
     private Configuration configuration;
@@ -313,6 +317,7 @@ public class TimedTextVerifier implements VerifierContext {
     private double parsedExternalFrameRate;
     private double parsedExternalDuration;
     private double[] parsedExternalExtent;
+    private List<SemanticsVerifier> externalVerifiers = new java.util.ArrayList<>();
 
     // global processing state
     private PrintWriter showOutput;
@@ -865,6 +870,10 @@ public class TimedTextVerifier implements VerifierContext {
             if (!reporter.hasDefaultWarning(token))
                 throw new InvalidOptionUsageException("--" + option, "token '" + token + "' is not a recognized warning token");
             reporter.enableWarning(token);
+        } else if (option.equals("external-verifier")) {
+            if (index + 1 > numArgs)
+                throw new MissingOptionArgumentException("--" + option);
+            externalVerifierClasses.add(args.get(++index));
         } else if ((optionProcessor != null) && optionProcessor.hasOption(arg)) {
             return optionProcessor.parseOption(args, index);
         } else
@@ -959,6 +968,20 @@ public class TimedTextVerifier implements VerifierContext {
                 getExternalParameters().setParameter("externalExtent", parsedExternalExtent);
             } else
                 throw new InvalidOptionUsageException("external-extent", "invalid syntax: " + externalExtent);
+        }
+        if (!externalVerifierClasses.isEmpty()) {
+            for (String verifierClaz : externalVerifierClasses) {
+                try {
+                    Class verifierClass = Class.forName(verifierClaz);
+                    SemanticsVerifier verifier = (SemanticsVerifier) verifierClass.newInstance();
+                    externalVerifiers.add(verifier);
+                } catch (ClassCastException ex) {
+                    throw new InvalidOptionUsageException("external-verifier",
+                            "supplied verifier doesn't implement com.skynav.ttv.verifier.SemanticsVerifier interface");
+                } catch (Exception ex) {
+                    throw new InvalidOptionUsageException("external-verifier", "cannot load external verifier");
+                }
+            }
         }
         if (optionProcessor != null)
             optionProcessor.processDerivedOptions();
@@ -1961,6 +1984,13 @@ public class TimedTextVerifier implements VerifierContext {
         }
         return reporter.getResourceErrors() == 0;
     }
+    
+    private boolean verifyExternalSemantics() {
+        for (SemanticsVerifier verifier : externalVerifiers) {
+            verifier.verify(rootBinding, this);
+        }
+        return reporter.getResourceErrors() == 0;
+    }
 
     private int verify(List<String> args, String uri, ResultProcessor resultProcessor) {
         Reporter reporter = getReporter();
@@ -1976,6 +2006,8 @@ public class TimedTextVerifier implements VerifierContext {
             if (!verifyValidity())
                 break;
             if (!verifySemantics())
+                break;
+            if (!verifyExternalSemantics())
                 break;
             if (resultProcessor != null)
                 resultProcessor.processResult(args, resourceUri, rootBinding);
