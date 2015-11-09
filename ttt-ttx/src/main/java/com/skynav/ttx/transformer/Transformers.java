@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.skynav.ttx.transformer.isd.ISD;
-import com.skynav.ttx.transformer.ttmlplain.TTMLPlain;
 
 public class Transformers {
 
@@ -38,7 +37,6 @@ public class Transformers {
     static {
         Map<String,Class<? extends Transformer>> m = new java.util.TreeMap<String,Class<? extends Transformer>>();
         m.put(ISD.TRANSFORMER_NAME, ISD.ISDTransformer.class);
-        m.put(TTMLPlain.TRANSFORMER_NAME, TTMLPlain.TTMLPlainTransformer.class);
         transformerMap = Collections.unmodifiableMap(m);
     }
 
