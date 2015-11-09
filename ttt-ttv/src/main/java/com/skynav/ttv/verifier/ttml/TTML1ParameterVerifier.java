@@ -29,6 +29,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.namespace.QName;
 
@@ -46,6 +47,8 @@ import com.skynav.ttv.model.ttml1.ttd.MarkerMode;
 import com.skynav.ttv.model.ttml1.ttd.TimeBase;
 import com.skynav.ttv.model.ttml1.ttp.Extensions;
 import com.skynav.ttv.model.ttml1.ttp.Features;
+import com.skynav.ttv.util.Annotations;
+import com.skynav.ttv.util.ComparableQName;
 import com.skynav.ttv.util.Enums;
 import com.skynav.ttv.util.Reporter;
 import com.skynav.ttv.verifier.ParameterValueVerifier;
@@ -67,19 +70,30 @@ import com.skynav.ttv.verifier.util.Strings;
 import com.skynav.xml.helpers.XML;
 
 import static com.skynav.ttv.model.ttml.TTML1.Constants.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class TTML1ParameterVerifier implements ParameterVerifier {
 
-    public static final String NAMESPACE = NAMESPACE_TT_PARAMETER;
+    public static final String NAMESPACE                        = NAMESPACE_TT_PARAMETER;
 
-    public static final QName cellResolutionAttributeName = new QName(getParameterNamespaceUri(), "cellResolution");
+    public static final QName cellResolutionAttributeName       = new QName(getParameterNamespaceUri(), "cellResolution");
+    public static final QName clockModeAttributeName            = new QName(getParameterNamespaceUri(), "clockMode");
+    public static final QName dropModeAttributeName             = new QName(getParameterNamespaceUri(), "dropMode");
+    public static final QName frameRateAttributeName            = new QName(getParameterNamespaceUri(), "frameRate");
+    public static final QName frameRateMultiplierAttributeName  = new QName(getParameterNamespaceUri(), "frameRateMultiplier");
+    public static final QName markerModeAttributeName           = new QName(getParameterNamespaceUri(), "markerMode");
+    public static final QName pixelAspectRatioAttributeName     = new QName(getParameterNamespaceUri(), "pixelAspectRatio");
+    public static final QName profileAttributeName              = new QName(getParameterNamespaceUri(), "profile");
+    public static final QName subFrameRateAttributeName         = new QName(getParameterNamespaceUri(), "subFrameRate");
+    public static final QName tickRateAttributeName             = new QName(getParameterNamespaceUri(), "tickRate");
+    public static final QName timeBaseAttributeName             = new QName(getParameterNamespaceUri(), "timeBase");
+    public static final QName useAttributeName                  = new QName("", "use");
+    public static final QName xmlBaseAttributeName              = XML.getBaseAttributeName();
 
-    protected static final List<Object[]> parameterAccessorMap  = new ArrayList<>(Arrays.asList(new Object[][] {
+    public static final QName defaultedParametersAttributeName  = new QName(Annotations.getNamespace(), "defaultedParameters", Annotations.getNamespacePrefix());
+
+    protected static final Object[][] parameterAccessorMap        = new Object[][] {
         {
-            new QName(NAMESPACE,"cellResolution"),              // attribute name
+            cellResolutionAttributeName,                        // attribute name
             "CellResolution",                                   // accessor method name suffix
             String.class,                                       // value type
             CellResolutionVerifier.class,                       // specialized verifier
@@ -87,7 +101,7 @@ public class TTML1ParameterVerifier implements ParameterVerifier {
             "32 15",                                            // default value
         },
         {
-            new QName(NAMESPACE,"clockMode"),
+            clockModeAttributeName,
             "ClockMode",
             ClockMode.class,
             ClockModeVerifier.class,
@@ -95,7 +109,7 @@ public class TTML1ParameterVerifier implements ParameterVerifier {
             ClockMode.UTC,
         },
         {
-            new QName(NAMESPACE,"dropMode"),
+            dropModeAttributeName,
             "DropMode",
             DropMode.class,
             DropModeVerifier.class,
@@ -103,7 +117,7 @@ public class TTML1ParameterVerifier implements ParameterVerifier {
             DropMode.NON_DROP,
         },
         {
-            new QName(NAMESPACE,"frameRate"),
+            frameRateAttributeName,
             "FrameRate",
             BigInteger.class,
             FrameRateVerifier.class,
@@ -111,7 +125,7 @@ public class TTML1ParameterVerifier implements ParameterVerifier {
             BigInteger.valueOf(30),
         },
         {
-            new QName(NAMESPACE,"frameRateMultiplier"),
+            frameRateMultiplierAttributeName,
             "FrameRateMultiplier",
             String.class,
             FrameRateMultiplierVerifier.class,
@@ -119,7 +133,7 @@ public class TTML1ParameterVerifier implements ParameterVerifier {
             "1 1",
         },
         {
-            new QName(NAMESPACE,"markerMode"),
+            markerModeAttributeName,
             "MarkerMode",
             MarkerMode.class,
             MarkerModeVerifier.class,
@@ -127,7 +141,7 @@ public class TTML1ParameterVerifier implements ParameterVerifier {
             MarkerMode.DISCONTINUOUS,
         },
         {
-            new QName(NAMESPACE,"pixelAspectRatio"),
+            pixelAspectRatioAttributeName,
             "PixelAspectRatio",
             String.class,
             PixelAspectRatioVerifier.class,
@@ -135,7 +149,7 @@ public class TTML1ParameterVerifier implements ParameterVerifier {
             "1 1",
         },
         {
-            new QName(NAMESPACE,"profile"),
+            profileAttributeName,
             "Profile",
             String.class,
             ProfileVerifier.class,
@@ -143,7 +157,7 @@ public class TTML1ParameterVerifier implements ParameterVerifier {
             null,
         },
         {
-            new QName(NAMESPACE,"subFrameRate"),
+            subFrameRateAttributeName,
             "SubFrameRate",
             BigInteger.class,
             SubFrameRateVerifier.class,
@@ -151,7 +165,7 @@ public class TTML1ParameterVerifier implements ParameterVerifier {
             BigInteger.valueOf(1),
         },
         {
-            new QName(NAMESPACE,"tickRate"),
+            tickRateAttributeName,
             "TickRate",
             BigInteger.class,
             TickRateVerifier.class,
@@ -159,7 +173,7 @@ public class TTML1ParameterVerifier implements ParameterVerifier {
             BigInteger.valueOf(1),
         },
         {
-            new QName(NAMESPACE,"timeBase"),
+            timeBaseAttributeName,
             "TimeBase",
             TimeBase.class,
             TimeBaseVerifier.class,
@@ -168,7 +182,7 @@ public class TTML1ParameterVerifier implements ParameterVerifier {
         },
         // 'use' attribute applies only to ttp:profile element
         {
-            new QName("","use"),
+            useAttributeName,
             "Use",
             String.class,
             ProfileVerifier.class,
@@ -177,14 +191,14 @@ public class TTML1ParameterVerifier implements ParameterVerifier {
         },
         // 'xml:base' attribute applies only to ttp:features and ttp:extensions elements
         {
-            XML.getBaseAttributeName(),
+            xmlBaseAttributeName,
             "Base",
             String.class,
             BaseVerifier.class,
             Boolean.FALSE,
             null,
         },
-    }));
+    };
 
     private Model model;
     private Map<QName, ParameterAccessor> accessors;
@@ -282,7 +296,7 @@ public class TTML1ParameterVerifier implements ParameterVerifier {
         populateAccessors(accessors, parameterAccessorMap);
     }
 
-    protected void populateAccessors(Map<QName, ParameterAccessor> accessors, List<Object[]> accessorMap) {
+    protected void populateAccessors(Map<QName, ParameterAccessor> accessors, Object[][] accessorMap) {
         for (Object[] parameterAccessorEntry : accessorMap) {
             assert parameterAccessorEntry.length >= 6;
             QName parameterName = (QName) parameterAccessorEntry[0];
@@ -295,10 +309,12 @@ public class TTML1ParameterVerifier implements ParameterVerifier {
         }
     }
 
-    protected void setParameterDefaultValue(Object content, ParameterAccessor pa, Object defaultValue) {
+    protected boolean setParameterDefaultValue(Object content, ParameterAccessor pa, Object defaultValue) {
         if (content instanceof TimedText) {
-            if (defaultValue != null)
+            if (defaultValue != null) {
                 setParameterValue(content, pa.setterName, pa.valueClass, defaultValue);
+                return true;
+            }
         } else if ((content instanceof Features) || (content instanceof Extensions)) {
             if (pa.parameterName.equals(XML.getBaseAttributeName())) {
                 Model model = getModel();
@@ -306,10 +322,13 @@ public class TTML1ParameterVerifier implements ParameterVerifier {
                     defaultValue = model.getFeatureNamespaceUri().toString();
                 else if (content instanceof Extensions)
                     defaultValue = model.getExtensionNamespaceUri().toString();
-                if (defaultValue != null)
+                if (defaultValue != null) {
                     setParameterValue(content, pa.setterName, pa.valueClass, defaultValue);
+                    return true;
+                }
             }
         }
+        return false;
     }
 
     protected void setParameterValue(Object content, String setterName, Class<?> valueClass, Object value) {
@@ -352,8 +371,8 @@ public class TTML1ParameterVerifier implements ParameterVerifier {
                     success = verify(model, content, (String) value, locator, context);
                 else
                     success = verifier.verify(model, content, parameterName, value, locator, context);
-            } else
-                setParameterDefaultValue(content);
+            } else if (setParameterDefaultValue(content))
+                recordDefaultedParameter(model, content, parameterName, locator, context);
             if (!success) {
                 Reporter reporter = context.getReporter();
                 reporter.logError(reporter.message(locator, "*KEY*", "Invalid {0} value ''{1}''.", parameterName, value));
@@ -413,8 +432,8 @@ public class TTML1ParameterVerifier implements ParameterVerifier {
             }
         }
 
-        private void setParameterDefaultValue(Object content) {
-            TTML1ParameterVerifier.this.setParameterDefaultValue(content, this, defaultValue);
+        private boolean setParameterDefaultValue(Object content) {
+            return TTML1ParameterVerifier.this.setParameterDefaultValue(content, this, defaultValue);
         }
 
         private Object convertType(Object value, Class<?> targetClass) {
@@ -449,6 +468,26 @@ public class TTML1ParameterVerifier implements ParameterVerifier {
 
     public static final String getParameterNamespaceUri() {
         return NAMESPACE;
+    }
+
+    private static void recordDefaultedParameter(Model model, Object content, QName parameterName, Locator locator, VerifierContext context) {
+        Map<QName,String> otherAttributes = Annotations.getOtherAttributes(content);
+        Set<ComparableQName> defaulted = ComparableQName.parseNames(otherAttributes.get(defaultedParametersAttributeName));
+        ComparableQName pn = new ComparableQName(parameterName);
+        if (!defaulted.contains(pn)) {
+            defaulted.add(pn);
+            otherAttributes.put(defaultedParametersAttributeName, ComparableQName.toString(defaulted));
+        }
+    }
+
+    public static final boolean isParameterDefaulted(Object content, QName name) {
+        Map<QName,String> otherAttributes = Annotations.getOtherAttributes(content);
+        Set<ComparableQName> defaulted = ComparableQName.parseNames(otherAttributes.get(defaultedParametersAttributeName));
+        return defaulted.contains(name);
+    }
+
+    public static final boolean isFrameRateDefaulted(Object content) {
+        return isParameterDefaulted(content, new ComparableQName(frameRateAttributeName));
     }
 
 }

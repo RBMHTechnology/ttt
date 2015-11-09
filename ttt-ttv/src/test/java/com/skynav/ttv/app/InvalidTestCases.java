@@ -1445,13 +1445,18 @@ public class InvalidTestCases {
     }
 
     @Test
+    public void testInvalidIMSC1InvalidBadProfileAttribute() throws Exception {
+        performInvalidityTest("imsc1-invalid-bad-profile-attribute.xml", -1, -1);
+    }
+
+    @Test
     public void testInvalidIMSC1InvalidMissingProfileAttribute() throws Exception {
         performInvalidityTest("imsc1-invalid-missing-profile-attribute.xml", -1, -1);
     }
 
     @Test
-    public void testInvalidIMSC1InvalidBadProfileAttribute() throws Exception {
-        performInvalidityTest("imsc1-invalid-bad-profile-attribute.xml", -1, -1);
+    public void testInvalidIMSC1InvalidMissingRegionExtent() throws Exception {
+        performInvalidityTest("imsc1-invalid-missing-region-extent.xml", -1, -1);
     }
 
     @Test
@@ -1477,6 +1482,76 @@ public class InvalidTestCases {
     @Test
     public void testInvalidIMSC1InvalidNotPermittedSubFrameRate() throws Exception {
         performInvalidityTest("imsc1-invalid-not-permitted-sub-frame-rate.xml", -1, -1);
+    }
+
+    @Test
+    public void testInvalidIMSC1InvalidProhibitedSMPTEBackgroundImageHorizontalInImageProfile() throws Exception {
+        performInvalidityTest("imsc1-invalid-prohibited-smpte-background-image-horizontal-in-image-profile.xml", -1, -1);
+    }
+
+    @Test
+    public void testInvalidIMSC1InvalidProhibitedSMPTEBackgroundImageHorizontalInTextProfile() throws Exception {
+        performInvalidityTest("imsc1-invalid-prohibited-smpte-background-image-horizontal-in-text-profile.xml", -1, -1);
+    }
+
+    @Test
+    public void testInvalidIMSC1InvalidProhibitedSMPTEBackgroundImageInTextProfile() throws Exception {
+        performInvalidityTest("imsc1-invalid-prohibited-smpte-background-image-in-text-profile.xml", -1, -1);
+    }
+
+    @Test
+    public void testInvalidIMSC1InvalidProhibitedSMPTEBackgroundImageVerticalInImageProfile() throws Exception {
+        performInvalidityTest("imsc1-invalid-prohibited-smpte-background-image-vertical-in-image-profile.xml", -1, -1);
+    }
+
+    @Test
+    public void testInvalidIMSC1InvalidProhibitedSMPTEBackgroundImageVerticalInTextProfile() throws Exception {
+        performInvalidityTest("imsc1-invalid-prohibited-smpte-background-image-vertical-in-text-profile.xml", -1, -1);
+    }
+
+    @Test
+    public void testInvalidIMSC1InvalidProhibitedSMPTEImageInImageProfile() throws Exception {
+        performInvalidityTest("imsc1-invalid-prohibited-smpte-image-in-image-profile.xml", -1, -1);
+    }
+
+    @Test
+    public void testInvalidIMSC1InvalidProhibitedSMPTEImageInTextProfile() throws Exception {
+        performInvalidityTest("imsc1-invalid-prohibited-smpte-image-in-text-profile.xml", -1, -1);
+    }
+
+    @Test
+    public void testInvalidIMSC1InvalidProhibitedTimeBaseClock() throws Exception {
+        performInvalidityTest("imsc1-invalid-prohibited-time-base-clock.xml", -1, -1);
+    }
+
+    @Test
+    public void testInvalidIMSC1InvalidProhibitedTimeBaseSMPTE() throws Exception {
+        performInvalidityTest("imsc1-invalid-prohibited-time-base-smpte.xml", -1, -1);
+    }
+
+    @Test
+    public void testInvalidIMSC1InvalidRegionNotInRootContainer() throws Exception {
+        performInvalidityTest("imsc1-invalid-region-not-in-root-container.xml", -1, -1);
+    }
+
+    @Test
+    public void testInvalidIMSC1InvalidUsesFramesComponentWithoutFrameRate() throws Exception {
+        performInvalidityTest("imsc1-invalid-uses-frames-component-without-frame-rate.xml", -1, -1);
+    }
+
+    @Test
+    public void testInvalidIMSC1InvalidUsesFramesMetricWithoutFrameRate() throws Exception {
+        performInvalidityTest("imsc1-invalid-uses-frames-metric-without-frame-rate.xml", -1, -1);
+    }
+
+    @Test
+    public void testInvalidIMSC1InvalidUsesNegativeLength() throws Exception {
+        performInvalidityTest("imsc1-invalid-uses-negative-length.xml", -1, -1);
+    }
+
+    @Test
+    public void testInvalidIMSC1InvalidUsesPixelUnitWithoutRootExtent() throws Exception {
+        performInvalidityTest("imsc1-invalid-uses-pixel-unit-without-root-extent.xml", -1, -1);
     }
 
     private void performInvalidityTest(String resourceName, int expectedErrors, int expectedWarnings) {
