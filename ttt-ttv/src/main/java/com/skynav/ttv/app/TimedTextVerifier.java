@@ -1985,10 +1985,13 @@ public class TimedTextVerifier implements VerifierContext {
     }
     
     private boolean verifyExternalSemantics() {
+        boolean failed = false;
         for (SemanticsVerifier verifier : externalVerifiers) {
-            verifier.verify(rootBinding, this);
+            if (!verifier.verify(rootBinding, this)) {
+                failed = true;
+            }
         }
-        return reporter.getResourceErrors() == 0;
+        return !failed;
     }
 
     private int verify(List<String> args, String uri, ResultProcessor resultProcessor) {
