@@ -9,7 +9,20 @@
   <parent>
     <groupId>com.skynav.ttt</groupId>
     <artifactId>ttt</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>3.0-SNAPSHOT</version>
   </parent>
+
+  <distributionManagement>
+    <site>
+      <id>${project.artifactId}-site</id>
+      <url>${project.baseUri}</url>
+    </site>
+  </distributionManagement>
+
+  <scm>
+    <connection>scm:git:https://github.com/skynav/ttt.git</connection>
+    <url>scm:git:https://github.com/skynav/ttt.git</url>
+    <developerConnection>scm:git:https://github.com/skynav/ttt.git</developerConnection>
+  </scm>
 
 </project>

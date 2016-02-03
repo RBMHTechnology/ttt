@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Skynav, Inc. All rights reserved.
+ * Copyright 2013-2015 Skynav, Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,25 +31,26 @@ import javax.xml.namespace.QName;
 
 import org.w3c.dom.Node;
 
-import org.xml.sax.Locator;
-
 import com.skynav.ttv.model.Model;
+import com.skynav.ttv.util.Location;
 import com.skynav.ttv.verifier.StyleValueVerifier;
 import com.skynav.ttv.verifier.VerifierContext;
 import com.skynav.ttv.verifier.util.Regions;
 
 public class RegionAttributeVerifier implements StyleValueVerifier {
 
-    public boolean verify(Model model, Object content, QName name, Object valueObject, Locator locator, VerifierContext context) {
+    public boolean verify(Object value, Location location, VerifierContext context) {
+        Model model = context.getModel();
+        QName name = location.getAttributeName();
         QName targetName = model.getIdReferenceTargetName(name);
         Class<?> targetClass = model.getIdReferenceTargetClass(name);
         List<List<QName>> ancestors = model.getIdReferencePermissibleAncestors(name);
-        Object region = valueObject;
+        Object region = value;
         Node node = context.getXMLNode(region);
-        if (Regions.isRegionReference(node, region, locator, context, targetClass, ancestors))
+        if (Regions.isRegionReference(node, region, location, context, targetClass, ancestors))
             return true;
         else {
-            Regions.badRegionReference(node, region, locator, context, name, targetName, targetClass, ancestors);
+            Regions.badRegionReference(node, region, location, context, name, targetName, targetClass, ancestors);
             return false;
         }
     }

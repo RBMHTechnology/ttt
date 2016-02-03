@@ -42,9 +42,11 @@ import com.skynav.ttv.util.Reporter;
 import com.skynav.ttv.verifier.ParameterVerifier;
 import com.skynav.ttv.verifier.SemanticsVerifier;
 import com.skynav.ttv.verifier.StyleVerifier;
+import com.skynav.ttv.verifier.TimingVerifier;
 import com.skynav.ttv.verifier.imsc.IMSC1ParameterVerifier;
 import com.skynav.ttv.verifier.imsc.IMSC1SemanticsVerifier;
 import com.skynav.ttv.verifier.imsc.IMSC1StyleVerifier;
+import com.skynav.ttv.verifier.imsc.IMSC1TimingVerifier;
 
 public class IMSC1 {
 
@@ -57,6 +59,9 @@ public class IMSC1 {
         public static final String NAMESPACE_PROFILE = NAMESPACE_PREFIX + "/";
         public static final String NAMESPACE_EXTENSION = NAMESPACE_PREFIX + "/extension/";
 
+        public static final String NAMESPACE_EBUTT_PREFIX = "urn:ebu:tt";
+        public static final String NAMESPACE_EBUTT_STYLING = NAMESPACE_EBUTT_PREFIX + ":style";
+
         public static final String XSD_IMSC1 = "com/skynav/ttv/xsd/imsc1/imsc1.xsd";
 
         public static final String PROFILE_TEXT = "text";
@@ -68,9 +73,12 @@ public class IMSC1 {
 
         public static final String ATTR_ASPECT_RATIO = "aspectRatio";
         public static final String ATTR_FORCED_DISPLAY = "forcedDisplay";
+        public static final String ATTR_LINE_PADDING = "linePadding";
+        public static final String ATTR_MULTIROW_ALIGN = "multiRowAlign";
         public static final String ATTR_PROGRESSIVELY_DECODABLE = "progressivelyDecodable";
 
         public static final String CHARSET_REQUIRED = "UTF-8";
+        public static final int    MAX_REGIONS_PER_ISD = 4;
 
     }
 
@@ -113,6 +121,25 @@ public class IMSC1 {
         return inIMSC1Namespace(name);
     }
 
+    public static boolean inEBUTTStylingNamespace(QName name) {
+        String nsUri = name.getNamespaceURI();
+        return nsUri.equals(Constants.NAMESPACE_EBUTT_STYLING);
+    }
+
+    public static boolean maybeInEBUTTNamespace(QName name) {
+        String nsUri = name.getNamespaceURI();
+        return nsUri.startsWith(Constants.NAMESPACE_EBUTT_PREFIX);
+    }
+
+    public static boolean inEBUTTNamespace(QName name) {
+        if (!maybeInEBUTTNamespace(name))
+            return false;
+        else if (inEBUTTStylingNamespace(name))
+            return true;
+        else
+            return false;
+    }
+
     public static class IMSC1Model extends ST20522010Model {
 
         private static final QName altTextElementName = new com.skynav.ttv.model.imsc1.ittm.ObjectFactory().createAltText(new AltText()).getName();
@@ -124,9 +151,10 @@ public class IMSC1 {
         private URI extensionNamespaceUri;
         private Map<URI,Class<?>> profileSpecificationClasses;
         private Profile.StandardDesignations standardDesignations;
-        private SemanticsVerifier semanticsVerifier;
         private ParameterVerifier parameterVerifier;
+        private SemanticsVerifier semanticsVerifier;
         private StyleVerifier styleVerifier;
+        private TimingVerifier timingVerifier;
 
         public IMSC1Model() {
             populate();
@@ -153,6 +181,7 @@ public class IMSC1 {
                 namespaceURIs.add(new URI(Constants.NAMESPACE_METADATA));
                 namespaceURIs.add(new URI(Constants.NAMESPACE_PARAMETER));
                 namespaceURIs.add(new URI(Constants.NAMESPACE_STYLING));
+                namespaceURIs.add(new URI(Constants.NAMESPACE_EBUTT_STYLING));
                 this.namespaceURIs = namespaceURIs.toArray(new URI[namespaceURIs.size()]);
                 this.profileNamespaceUri = new URI(Constants.NAMESPACE_PROFILE);
                 this.extensionNamespaceUri = new URI(Constants.NAMESPACE_EXTENSION);
@@ -218,6 +247,11 @@ public class IMSC1 {
                 } else if (inIMSC1StylingNamespace(name)) {
                     if (ln.equals(Constants.ATTR_FORCED_DISPLAY))
                         return true;
+                } else if (inEBUTTStylingNamespace(name)) {
+                    if (ln.equals(Constants.ATTR_LINE_PADDING))
+                        return true;
+                    else if (ln.equals(Constants.ATTR_MULTIROW_ALIGN))
+                        return true;
                 }
             }
             return false;
@@ -242,9 +276,29 @@ public class IMSC1 {
                 } else if (inIMSC1StylingNamespace(attributeName)) {
                     if (ln.equals(Constants.ATTR_FORCED_DISPLAY))
                         return isTTContentOrRegionElement(elementName);
+                } else if (inEBUTTStylingNamespace(attributeName)) {
+                    if (ln.equals(Constants.ATTR_LINE_PADDING))
+                        return isEBUTTStylingUsageContext(elementName);
+                    else if (ln.equals(Constants.ATTR_MULTIROW_ALIGN))
+                        return isEBUTTStylingUsageContext(elementName);
                 }
             }
             return false;
+        }
+
+        protected boolean isEBUTTStylingUsageContext(QName name) {
+            if (isTTBodyElement(name))
+                return true;
+            else if (isTTDivElement(name))
+                return true;
+            else if (isTTParagraphElement(name))
+                return true;
+            else if (isTTRegionElement(name))
+                return true;
+            else if (isTTStyleElement(name))
+                return true;
+            else
+                return false;
         }
 
         public boolean isElement(QName name) {
@@ -306,9 +360,30 @@ public class IMSC1 {
             return styleVerifier;
         }
 
+        public TimingVerifier getTimingVerifier() {
+            if (timingVerifier == null) {
+                timingVerifier = new IMSC1TimingVerifier(this);
+            }
+            return timingVerifier;
+        }
+
         public void configureReporter(Reporter reporter) {
-            if (reporter.isWarningEnabled("references-external-image"))
+            if (!reporter.hasDisabledWarning("missing-timing"))
+                reporter.enableWarning("missing-timing");
+            if (!reporter.hasEnabledWarning("references-external-image"))
                 reporter.disableWarning("references-external-image");
+            if (!reporter.hasDisabledWarning("uses-line-height-normal"))
+                reporter.enableWarning("uses-line-height-normal");
+            if (!reporter.hasDisabledWarning("uses-non-recommended-font-family"))
+                reporter.enableWarning("uses-non-recommended-font-family");
+        }
+
+        public void initializeResourceState(URI uri, Map<String,Object> state) {
+            assert state != null;
+            /*
+            if (state.containsKey("ttxTransformingVerifier"))
+                state.put("ttxDontElideInitials", Boolean.TRUE);
+            */
         }
 
     }

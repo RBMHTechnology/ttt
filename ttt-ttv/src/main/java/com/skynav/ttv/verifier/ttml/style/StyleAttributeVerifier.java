@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Skynav, Inc. All rights reserved.
+ * Copyright 2013-2015 Skynav, Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -35,6 +35,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.Locator;
 
 import com.skynav.ttv.model.Model;
+import com.skynav.ttv.util.Location;
 import com.skynav.ttv.util.Reporter;
 import com.skynav.ttv.verifier.StyleValueVerifier;
 import com.skynav.ttv.verifier.VerifierContext;
@@ -43,24 +44,27 @@ import com.skynav.ttv.verifier.util.Styles;
 
 public class StyleAttributeVerifier implements StyleValueVerifier {
 
-    public boolean verify(Model model, Object content, QName name, Object valueObject, Locator locator, VerifierContext context) {
+    public boolean verify(Object value, Location location, VerifierContext context) {
         boolean failed = false;
-        QName targetName = model.getIdReferenceTargetName(name);
-        Class<?> targetClass = model.getIdReferenceTargetClass(name);
-        List<List<QName>> ancestors = model.getIdReferencePermissibleAncestors(name);
-        assert valueObject instanceof List<?>;
-        List<?> styles = (List<?>) valueObject;
+        assert value instanceof List<?>;
+        List<?> styles = (List<?>) value;
         if (styles.size() > 0) {
+            Model model = context.getModel();
+            QName name = location.getAttributeName();
+            QName targetName = model.getIdReferenceTargetName(name);
+            Class<?> targetClass = model.getIdReferenceTargetClass(name);
+            List<List<QName>> ancestors = model.getIdReferencePermissibleAncestors(name);
             Object styleLast = null;
             Set<String> styleIdentifiers = new java.util.HashSet<String>();
             for (Object style : styles) {
                 Node node = context.getXMLNode(style);
-                if (!Styles.isStyleReference(node, style, locator, context, targetClass, ancestors)) {
-                    Styles.badStyleReference(node, style, locator, context, name, targetName, targetClass, ancestors);
+                if (!Styles.isStyleReference(node, style, location, context, targetClass, ancestors)) {
+                    Styles.badStyleReference(node, style, location, context, name, targetName, targetClass, ancestors);
                     failed = true;
                 }
                 String id = IdReferences.getId(style);
                 Reporter reporter = context.getReporter();
+                Locator locator = location.getLocator();
                 if (styleIdentifiers.contains(id)) {
                     if (reporter.isWarningEnabled("duplicate-idref-in-style")) {
                         if (reporter.logWarning(reporter.message(locator, "*KEY*",

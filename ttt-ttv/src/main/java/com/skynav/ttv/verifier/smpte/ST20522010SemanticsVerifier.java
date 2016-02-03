@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Skynav, Inc. All rights reserved.
+ * Copyright 2013-2015 Skynav, Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -42,6 +42,7 @@ import com.skynav.ttv.model.smpte.ST20522010;
 import com.skynav.ttv.model.smpte.tt.rel2010.Data;
 import com.skynav.ttv.model.smpte.tt.rel2010.Image;
 import com.skynav.ttv.model.smpte.tt.rel2010.Information;
+import com.skynav.ttv.util.Location;
 import com.skynav.ttv.util.Message;
 import com.skynav.ttv.util.Reporter;
 import com.skynav.ttv.util.URIs;
@@ -359,9 +360,13 @@ public class ST20522010SemanticsVerifier extends TTML1SemanticsVerifier {
             return true;
     }
 
+    private static final QName backgroundImageAttributeName = new QName(NAMESPACE_2010, "backgroundImage");
+    protected QName getBackgroundImageAttributeName() {
+        return backgroundImageAttributeName;
+    }
+
     private boolean isBackgroundImageAttribute(QName name) {
-        String ln = name.getLocalPart();
-        return inSMPTEPrimaryNamespace(name) && ln.equals(ATTR_BACKGROUND_IMAGE);
+        return name.equals(getBackgroundImageAttributeName());
     }
 
     protected boolean verifySMPTEBackgroundImage(Object content, QName name, Object valueObject, Locator locator, VerifierContext context) {
@@ -386,7 +391,8 @@ public class ST20522010SemanticsVerifier extends TTML1SemanticsVerifier {
                         if (target != null) {
                             QName targetName = context.getBindingElementName(target);
                             if (!isImageElement(targetName)) {
-                                IdReferences.badReference(target, locator, context, name, getImageElementName());
+                                Location location = new Location(content, context.getBindingElementName(content), name, locator);
+                                IdReferences.badReference(target, location, context, name, getImageElementName());
                                 failed = true;
                             }
                         }
@@ -429,12 +435,13 @@ public class ST20522010SemanticsVerifier extends TTML1SemanticsVerifier {
         String value = (String) valueObject;
         Integer[] minMax = new Integer[] { 1, 1 };
         Object[] treatments = new Object[] { NegativeTreatment.Error, MixedUnitsTreatment.Error };
+        Location location = new Location(content, context.getBindingElementName(content), name, locator);
         if (Keywords.isKeyword(value)) {
             return isBackgroundImageHVKeyword(name, value);
-        } else if (Lengths.isLengths(value, locator, context, minMax, treatments, null)) {
+        } else if (Lengths.isLengths(value, location, context, minMax, treatments, null)) {
             return true;
         } else {
-            Lengths.badLengths(value, locator, context, minMax, treatments);
+            Lengths.badLengths(value, location, context, minMax, treatments);
             return false;
         }
     }

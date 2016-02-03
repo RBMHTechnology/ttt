@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-15 Skynav, Inc. All rights reserved.
+ * Copyright 2013-2015 Skynav, Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -35,6 +35,7 @@ import org.xml.sax.Locator;
 
 import com.skynav.ttv.model.Model;
 import com.skynav.ttv.model.ttml1.tt.TimedText;
+import com.skynav.ttv.util.Location;
 import com.skynav.ttv.util.Reporter;
 import com.skynav.ttv.verifier.TimingValueVerifier;
 import com.skynav.ttv.verifier.TimingVerifier;
@@ -53,9 +54,13 @@ public class TTML1TimingVerifier implements TimingVerifier {
 
     private static final String timingNamespace                 = "";
 
+    public static final QName beginAttributeName                = new QName(timingNamespace, "begin");
+    public static final QName durAttributeName                  = new QName(timingNamespace, "dur");
+    public static final QName endAttributeName                  = new QName(timingNamespace, "end");
+
     protected static final List<Object[]> timingAccessorMap     = new ArrayList<>(Arrays.asList(new Object[][] {
         {
-            new QName(timingNamespace,"begin"),                 // attribute name
+            beginAttributeName,                                 // attribute name
             "Begin",                                            // accessor method name suffix
             String.class,                                       // accessor method value type
             TimeCoordinateVerifier.class,                       // specialized verifier
@@ -63,7 +68,7 @@ public class TTML1TimingVerifier implements TimingVerifier {
             null,                                               // default value
         },
         {
-            new QName(timingNamespace,"dur"),
+            durAttributeName,
             "Dur",
             String.class,
             TimeDurationVerifier.class,
@@ -71,7 +76,7 @@ public class TTML1TimingVerifier implements TimingVerifier {
             null,
         },
         {
-            new QName(timingNamespace,"end"),
+            endAttributeName,
             "End",
             String.class,
             TimeCoordinateVerifier.class,
@@ -154,31 +159,37 @@ public class TTML1TimingVerifier implements TimingVerifier {
             boolean success = true;
             Object value = getTimingValue(content);
             if (value != null) {
+                Location location = new Location(content, context.getBindingElementName(content), timingName, locator);
                 if (value instanceof String)
-                    success = verify(model, content, (String) value, locator, context);
+                    success = verify((String) value, location, context);
                 else
-                    success = verifier.verify(model, content, timingName, value, locator, context, verificationParameters);
+                    success = verifier.verify(value, location, context, verificationParameters);
             }
             if (!success) {
                 if (value != null) {
                     Reporter reporter = context.getReporter();
-                    reporter.logError(reporter.message(locator, "*KEY*", "Invalid {0} value ''{1}''.", timingName, value));
+                    reporter.logError(reporter.message(locator,
+                        "*KEY*", "Invalid {0} value ''{1}''.", timingName, value));
                 }
             }
             return success;
         }
 
-        private boolean verify(Model model, Object content, String value, Locator locator, VerifierContext context) {
+        private boolean verify(String value, Location location, VerifierContext context) {
             boolean success = false;
             Reporter reporter = context.getReporter();
-            if (value.length() == 0)
-                reporter.logInfo(reporter.message(locator, "*KEY*", "Empty {0} not permitted, got ''{1}''.", timingName, value));
-            else if (Strings.isAllXMLSpace(value))
-                reporter.logInfo(reporter.message(locator, "*KEY*", "The value of {0} is entirely XML space characters, got ''{1}''.", timingName, value));
-            else if (!paddingPermitted && !value.equals(value.trim()))
-                reporter.logInfo(reporter.message(locator, "*KEY*", "XML space padding not permitted on {0}, got ''{1}''.", timingName, value));
-            else
-                success = verifier.verify(model, content, timingName, value, locator, context, verificationParameters);
+            Locator locator = location.getLocator();
+            if (value.length() == 0) {
+                reporter.logInfo(reporter.message(locator,
+                    "*KEY*", "Empty {0} not permitted, got ''{1}''.", timingName, value));
+            } else if (Strings.isAllXMLSpace(value)) {
+                reporter.logInfo(reporter.message(locator,
+                    "*KEY*", "The value of {0} is entirely XML space characters, got ''{1}''.", timingName, value));
+            } else if (!paddingPermitted && !value.equals(value.trim())) {
+                reporter.logInfo(reporter.message(locator,
+                    "*KEY*", "XML space padding not permitted on {0}, got ''{1}''.", timingName, value));
+            } else
+                success = verifier.verify(value, location, context, verificationParameters);
             return success;
         }
 

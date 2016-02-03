@@ -30,6 +30,7 @@ import org.xml.sax.Locator;
 import com.skynav.ttv.model.value.Color;
 import com.skynav.ttv.model.value.Length;
 import com.skynav.ttv.model.value.TextOutline;
+import com.skynav.ttv.util.Location;
 import com.skynav.ttv.util.Reporter;
 import com.skynav.ttv.verifier.VerifierContext;
 import com.skynav.ttv.verifier.util.Colors;
@@ -38,10 +39,13 @@ import com.skynav.ttv.verifier.util.NegativeTreatment;
 
 public class Outline {
 
-    public static boolean isOutline(String value, Locator locator, VerifierContext context, TextOutline[] outputOutline) {
+    public static boolean isOutline(String value, Location location, VerifierContext context, TextOutline[] outputOutline) {
         String [] components = value.split("[ \t\r\n]+");
         int componentIndex = 0;
         int numComponents = components.length;
+        // none
+        if ((numComponents == 1) && Keywords.isNone(components[0]))
+            return true;
         // color
         String c = null;
         if (componentIndex < numComponents) {
@@ -50,7 +54,7 @@ public class Outline {
         }
         Color[] color = new Color[1];
         if (c != null) {
-            if (!Colors.isColor(c, locator, context, color))
+            if (!Colors.isColor(c, location, context, color))
                 return false;
         }
         // thickness
@@ -62,7 +66,7 @@ public class Outline {
         Length[] thickness = new Length[1];
         if (t != null) {
             Object[] treatments = new Object[] { NegativeTreatment.Error };
-            if (!Lengths.isLength(t, locator, context, treatments, thickness))
+            if (!Lengths.isLength(t, location, context, treatments, thickness))
                 return false;
         } else
             return false;
@@ -75,7 +79,7 @@ public class Outline {
         Length[] blur = new Length[1];
         if (b != null) {
             Object[] treatments = new Object[] { NegativeTreatment.Error };
-            if (!Lengths.isLength(b, locator, context, treatments, blur))
+            if (!Lengths.isLength(b, location, context, treatments, blur))
                 return false;
         }
         // unparsed components
@@ -89,11 +93,15 @@ public class Outline {
         return true;
     }
 
-    public static void badOutline(String value, Locator locator, VerifierContext context) {
+    public static void badOutline(String value, Location location, VerifierContext context) {
         Reporter reporter = context.getReporter();
+        Locator locator = location.getLocator();
         String [] components = value.split("[ \t\r\n]+");
         int componentIndex = 0;
         int numComponents = components.length;
+        // none
+        if ((numComponents == 1) && Keywords.isNone(components[0]))
+            return;
         // color
         String c = null;
         if (componentIndex < numComponents) {
@@ -101,8 +109,8 @@ public class Outline {
                 c = components[componentIndex++];
         }
         if (c != null) {
-            if (!Colors.isColor(c, locator, context, null)) {
-                Colors.badColor(c, locator, context);
+            if (!Colors.isColor(c, location, context, null)) {
+                Colors.badColor(c, location, context);
                 reporter.logInfo(reporter.message(locator, "*KEY*", "Bad <color> expression in color component ''{0}''.", c));
             }
         }
@@ -114,8 +122,8 @@ public class Outline {
         }
         if (t != null) {
             Object[] treatments = new Object[] { NegativeTreatment.Error };
-            if (!Lengths.isLength(t, locator, context, treatments, null)) {
-                Lengths.badLength(t, locator, context, treatments);
+            if (!Lengths.isLength(t, location, context, treatments, null)) {
+                Lengths.badLength(t, location, context, treatments);
                 reporter.logInfo(reporter.message(locator, "*KEY*", "Bad <length> expression in thickness component ''{0}''.", t));
             }
         } else {
@@ -129,8 +137,8 @@ public class Outline {
         }
         if (b != null) {
             Object[] treatments = new Object[] { NegativeTreatment.Error };
-            if (!Lengths.isLength(b, locator, context, treatments, null)) {
-                Lengths.badLength(b, locator, context, treatments);
+            if (!Lengths.isLength(b, location, context, treatments, null)) {
+                Lengths.badLength(b, location, context, treatments);
                 reporter.logInfo(reporter.message(locator, "*KEY*", "Bad <length> expression in blur component ''{0}''.", b));
             }
         }

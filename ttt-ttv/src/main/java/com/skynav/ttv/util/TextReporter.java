@@ -388,7 +388,7 @@ public class TextReporter implements Reporter {
     }
 
     public boolean isWarningEnabled(String token) {
-        boolean enabled = defaultWarnings.get(token);
+        boolean enabled = hasDefaultWarning(token) ? defaultWarnings.get(token) : false;
         if (getEnabledWarnings().contains(token) || getEnabledWarnings().contains("all"))
             enabled = true;
         if (getDisabledWarnings().contains(token) || getDisabledWarnings().contains("all"))
@@ -396,8 +396,16 @@ public class TextReporter implements Reporter {
         return enabled;
     }
 
+    public boolean hasEnabledWarning(String token) {
+        return getEnabledWarnings().contains(token);
+    }
+
     public void enableWarning(String token) {
         getEnabledWarnings().add(token);
+    }
+
+    public boolean hasDisabledWarning(String token) {
+        return getDisabledWarnings().contains(token);
     }
 
     public void disableWarning(String token) {

@@ -65,12 +65,14 @@ import com.skynav.ttv.verifier.VerifierContext;
 import com.skynav.ttv.verifier.ttml.style.DirectionVerifier;
 import com.skynav.ttv.verifier.ttml.style.DisplayAlignVerifier;
 import com.skynav.ttv.verifier.ttml.style.DisplayVerifier;
+import com.skynav.ttv.verifier.ttml.style.ExtentVerifier;
 import com.skynav.ttv.verifier.ttml.style.FontKerningVerifier;
 import com.skynav.ttv.verifier.ttml.style.FontShearVerifier;
 import com.skynav.ttv.verifier.ttml.style.FontStyleVerifier;
 import com.skynav.ttv.verifier.ttml.style.FontVariantVerifier;
 import com.skynav.ttv.verifier.ttml.style.FontWeightVerifier;
 import com.skynav.ttv.verifier.ttml.style.LineHeightVerifier;
+import com.skynav.ttv.verifier.ttml.style.OriginVerifier;
 import com.skynav.ttv.verifier.ttml.style.OverflowVerifier;
 import com.skynav.ttv.verifier.ttml.style.PositionVerifier;
 import com.skynav.ttv.verifier.ttml.style.RubyAlignVerifier;
@@ -95,11 +97,25 @@ import java.util.Arrays;
 
 public class TTML2StyleVerifier extends TTML1StyleVerifier {
 
+    public static final QName fontKerningAttributeName          = new QName(NAMESPACE,"fontKerning");
+    public static final QName fontShearAttributeName            = new QName(NAMESPACE,"fontShear");
+    public static final QName fontVariantAttributeName          = new QName(NAMESPACE,"fontVariant");
+    public static final QName positionAttributeName             = new QName(NAMESPACE,"position");
     public static final QName rubyAttributeName                 = new QName(NAMESPACE,"ruby");
+    public static final QName rubyAlignAttributeName            = new QName(NAMESPACE,"rubyAlign");
+    public static final QName rubyOffsetAttributeName           = new QName(NAMESPACE,"rubyOffset");
+    public static final QName rubyOverflowAttributeName         = new QName(NAMESPACE,"rubyOverflow");
+    public static final QName rubyOverhangAttributeName         = new QName(NAMESPACE,"rubyOverhang");
+    public static final QName rubyOverhangClassAttributeName    = new QName(NAMESPACE,"rubyOverhangClass");
+    public static final QName rubyPositionAttributeName         = new QName(NAMESPACE,"rubyPosition");
+    public static final QName rubyReserveAttributeName          = new QName(NAMESPACE,"rubyReserve");
+    public static final QName scriptAttributeName               = new QName(NAMESPACE,"script");
+    public static final QName textCombineAttributeName          = new QName(NAMESPACE,"textCombine");
+    public static final QName textEmphasisAttributeName         = new QName(NAMESPACE,"textEmphasis");
 
     private static final Object[][] styleAccessorMap            = new Object[][] {
         {
-            new QName(NAMESPACE,"direction"),
+            directionAttributeName,
             "Direction",
             Direction.class,
             DirectionVerifier.class,
@@ -110,7 +126,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             Direction.LTR.value(),
         },
         {
-            new QName(NAMESPACE,"display"),
+            displayAttributeName,
             "Display",
             Display.class,
             DisplayVerifier.class,
@@ -121,7 +137,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             Display.AUTO.value(),
         },
         {
-            new QName(NAMESPACE,"displayAlign"),
+            displayAlignAttributeName,
             "DisplayAlign",
             DisplayAlign.class,
             DisplayAlignVerifier.class,
@@ -132,7 +148,18 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             DisplayAlign.BEFORE.value(),
         },
         {
-            new QName(NAMESPACE,"fontKerning"),
+            extentAttributeName,
+            "Extent",
+            String.class,
+            ExtentVerifier.class,
+            Integer.valueOf(APPLIES_TO_TT|APPLIES_TO_REGION|APPLIES_TO_DIV|APPLIES_TO_P),
+            Boolean.FALSE,
+            Boolean.FALSE,
+            "auto",
+            null,
+        },
+        {
+            fontKerningAttributeName,
             "FontKerning",
             FontKerning.class,
             FontKerningVerifier.class,
@@ -143,7 +170,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             FontKerning.NORMAL.value(),
         },
         {
-            new QName(NAMESPACE,"fontShear"),
+            fontShearAttributeName,
             "FontShear",
             String.class,
             FontShearVerifier.class,
@@ -154,7 +181,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             null,
         },
         {
-            new QName(NAMESPACE,"fontStyle"),
+            fontStyleAttributeName,
             "FontStyle",
             FontStyle.class,
             FontStyleVerifier.class,
@@ -165,7 +192,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             FontStyle.NORMAL.value(),
         },
         {
-            new QName(NAMESPACE,"fontVariant"),
+            fontVariantAttributeName,
             "FontVariant",
             String.class,
             FontVariantVerifier.class,
@@ -176,7 +203,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             null,
         },
         {
-            new QName(NAMESPACE,"fontWeight"),
+            fontWeightAttributeName,
             "FontWeight",
             FontWeight.class,
             FontWeightVerifier.class,
@@ -198,7 +225,18 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             null,
         },
         {
-            new QName(NAMESPACE,"overflow"),
+            originAttributeName,
+            "Origin",
+            String.class,
+            OriginVerifier.class,
+            Integer.valueOf(APPLIES_TO_REGION|APPLIES_TO_DIV|APPLIES_TO_P),
+            Boolean.FALSE,
+            Boolean.FALSE,
+            "auto",
+            null
+        },
+        {
+            overflowAttributeName,
             "Overflow",
             Overflow.class,
             OverflowVerifier.class,
@@ -209,11 +247,11 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             Overflow.HIDDEN.value(),
         },
         {
-            new QName(NAMESPACE,"position"),
+            positionAttributeName,
             "Position",
             String.class,
             PositionVerifier.class,
-            Integer.valueOf(APPLIES_TO_REGION),
+            Integer.valueOf(APPLIES_TO_REGION|APPLIES_TO_DIV|APPLIES_TO_P),
             Boolean.FALSE,
             Boolean.FALSE,
             "center",
@@ -231,7 +269,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             Ruby.NONE.value()
         },
         {
-            new QName(NAMESPACE,"rubyAlign"),
+            rubyAlignAttributeName,
             "RubyAlign",
             RubyAlign.class,
             RubyAlignVerifier.class,
@@ -242,7 +280,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             RubyAlign.AUTO.value()
         },
         {
-            new QName(NAMESPACE,"rubyOffset"),
+            rubyOffsetAttributeName,
             "RubyOffset",
             String.class,
             RubyOffsetVerifier.class,
@@ -253,7 +291,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             null
         },
         {
-            new QName(NAMESPACE,"rubyOverflow"),
+            rubyOverflowAttributeName,
             "RubyOverflow",
             RubyOverflow.class,
             RubyOverflowVerifier.class,
@@ -264,7 +302,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             RubyOverflow.SHIFT_RUBY.value()
         },
         {
-            new QName(NAMESPACE,"rubyOverhang"),
+            rubyOverhangAttributeName,
             "RubyOverhang",
             RubyOverhang.class,
             RubyOverhangVerifier.class,
@@ -275,7 +313,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             RubyOverhang.ALLOW.value()
         },
         {
-            new QName(NAMESPACE,"rubyOverhangClass"),
+            rubyOverhangClassAttributeName,
             "RubyOverhangClass",
             String.class,
             RubyOverhangClassVerifier.class,
@@ -286,7 +324,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             null
         },
         {
-            new QName(NAMESPACE,"rubyPosition"),
+            rubyPositionAttributeName,
             "RubyPosition",
             RubyPosition.class,
             RubyPositionVerifier.class,
@@ -297,7 +335,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             RubyPosition.AUTO.value()
         },
         {
-            new QName(NAMESPACE,"rubyReserve"),
+            rubyReserveAttributeName,
             "RubyReserve",
             String.class,
             RubyReserveVerifier.class,
@@ -308,7 +346,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             null
         },
         {
-            new QName(NAMESPACE,"script"),
+            scriptAttributeName,
             "Script",
             String.class,
             ScriptVerifier.class,
@@ -319,7 +357,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             null,
         },
         {
-            new QName(NAMESPACE,"showBackground"),
+            showBackgroundAttributeName,
             "ShowBackground",
             ShowBackground.class,
             ShowBackgroundVerifier.class,
@@ -341,7 +379,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             TextAlign.START.value(),
         },
         {
-            new QName(NAMESPACE,"textCombine"),
+            textCombineAttributeName,
             "TextCombine",
             String.class,
             TextCombineVerifier.class,
@@ -352,7 +390,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             null
         },
         {
-            new QName(NAMESPACE,"textDecoration"),
+            textDecorationAttributeName,
             "TextDecoration",
             TextDecoration.class,
             TextDecorationVerifier.class,
@@ -363,7 +401,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             TextDecoration.NONE.value(),
         },
         {
-            new QName(NAMESPACE,"textEmphasis"),
+            textEmphasisAttributeName,
             "TextEmphasis",
             String.class,
             TextEmphasisVerifier.class,
@@ -374,7 +412,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             null
         },
         {
-            new QName(NAMESPACE,"unicodeBidi"),
+            unicodeBidiAttributeName,
             "UnicodeBidi",
             UnicodeBidi.class,
             UnicodeBidiVerifier.class,
@@ -385,7 +423,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             UnicodeBidi.NORMAL.value(),
         },
         {
-            new QName(NAMESPACE,"visibility"),
+            visibilityAttributeName,
             "Visibility",
             Visibility.class,
             VisibilityVerifier.class,
@@ -396,7 +434,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             Visibility.VISIBLE.value(),
         },
         {
-            new QName(NAMESPACE,"wrapOption"),
+            wrapOptionAttributeName,
             "WrapOption",
             WrapOption.class,
             WrapOptionVerifier.class,
@@ -407,7 +445,7 @@ public class TTML2StyleVerifier extends TTML1StyleVerifier {
             WrapOption.WRAP.value(),
         },
         {
-            new QName(NAMESPACE,"writingMode"),
+            writingModeAttributeName,
             "WritingMode",
             WritingMode.class,
             WritingModeVerifier.class,

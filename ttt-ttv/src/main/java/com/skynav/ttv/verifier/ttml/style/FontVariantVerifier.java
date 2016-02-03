@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Skynav, Inc. All rights reserved.
+ * Copyright 2013-2015 Skynav, Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -25,24 +25,20 @@
 
 package com.skynav.ttv.verifier.ttml.style;
 
-import javax.xml.namespace.QName;
-
-import org.xml.sax.Locator;
-
-import com.skynav.ttv.model.Model;
+import com.skynav.ttv.util.Location;
 import com.skynav.ttv.verifier.StyleValueVerifier;
 import com.skynav.ttv.verifier.VerifierContext;
 import com.skynav.ttv.verifier.util.Fonts;
 
 public class FontVariantVerifier implements StyleValueVerifier {
 
-    public boolean verify(Model model, Object content, QName name, Object valueObject, Locator locator, VerifierContext context) {
-        assert valueObject instanceof String;
-        String value = (String) valueObject;
-        if (Fonts.isFontVariants(value, locator, context, null))
+    public boolean verify(Object value, Location location, VerifierContext context) {
+        assert value instanceof String;
+        String s = (String) value;
+        if (Fonts.isFontVariants(s, location, context, null))
             return true;
         else {
-            Fonts.badFontVariants(value, locator, context);
+            Fonts.badFontVariants(s, location, context);
             return false;
         }
     }
